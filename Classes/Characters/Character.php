@@ -1,10 +1,12 @@
 <?php
 
+require("./Spells/Spell.php");
 
-abstract class Character {
+abstract class Character
+{
 
     private bool $isAlive = true;
-    
+
     function __construct(
         protected string $className,
         protected string $element,
@@ -16,23 +18,25 @@ abstract class Character {
         protected float $magicalDefense,
         protected array $level = ["level" => 1, "exp" => 0],
         protected ?Spell $offensiveSpell = null,
-        protected ?Spell $defenseSpell= null,
-        protected ?Spell $healSpell= null,
-        )
+        protected ?Spell $defenseSpell = null,
+        protected ?Spell $healSpell = null,
+    ) {
+    }
+
+    public function damageDeals(Character $character): float
+    { //a function to calculate the damage before the getHit() function
+        return 0.1;
+    }
+
+    public function getHit(Character $victim, float $damage): void
     {
-        
-    }
 
-    public function damageDeals(Character $character): float{ //a function to calculate the damage before the getHit() function
-        
-    }
-
-    public function getHit(Character $victim, float $damage): void{
-        
         //$victim->health -= $finalDamage;
     }
 
-    public function state(): bool{
-        return $this->$isAlive;
+    public function state(): bool
+    {
+
+        return $this->isAlive;
     }
 }
