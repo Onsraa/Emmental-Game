@@ -24,14 +24,19 @@ abstract class Character
     }
 
     public function damageDeals(Character $character): float
-    { //a function to calculate the damage before the getHit() function
+    { //function to calculate the damage before the damageTanked()
+        return 0.1;
+    }
+
+    public function damageTanked(Character $victim, float $damage): float
+    { //function to calculate the final damage before the getHit()
+
         return 0.1;
     }
 
     public function getHit(Character $victim, float $damage): void
     {
-
-        //$victim->health -= $finalDamage;
+        //final damage done to the opponent
     }
 
     public function state(): bool
