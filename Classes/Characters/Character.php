@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Classes\Characters;
+
 use App\Classes\Gears\Gear;
 use App\Classes\Spells\Spell;
 
 abstract class Character
 {
 
-    private bool $isAlive = true;
+    private bool $isAlive = true; // primary status to verify if the character is alive or not
 
     function __construct(
-        protected string $className,
-        protected string $element,
+        protected string $className, // basically the specialization name of the character
+        protected string $element, // the element which will define who he is weak against
         protected float $health,
         protected float $mana,
         protected float $physicalStrenght, // basic stats without weapons and stuffs
@@ -26,25 +27,29 @@ abstract class Character
     ) {
     }
 
-    public function damageDeals(Character $character): float
-    { //function to calculate the damage before the damageTanked()
+    protected function damageDeals(Character $character): float
+    { // function to calculate the damage before the damageTanked()
         return 0.1;
     }
 
-    public function damageTanked(Character $victim, float $damage): float
-    { //function to calculate the final damage before the getHit()
+    protected function damageTanked(Character $victim, float $damage): float
+    { // function to calculate the final damage before the getHit()
 
         return 0.1;
     }
 
     public function getHit(Character $victim, float $damage): void
     {
-        //final damage done to the opponent
+        // final damage done to the opponent
+        $victim->health -= $damage;
     }
 
-    public function state(): bool
+    public function state(Character $victim): bool
     {
-
-        return $this->isAlive;
+        // change the value of isAlive depends on the health state
+        if($victim->health <= 0){
+            $victim->isAlive = false;
+        }
+        return $victim->isAlive;
     }
 }

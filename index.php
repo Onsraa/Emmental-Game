@@ -6,3 +6,5 @@ require_once("./Functions/rng.php");
 use App\Classes\Specialisations\Draconist;
 
 $teddy = new Draconist();
+
+echo $teddy->element;
