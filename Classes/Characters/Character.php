@@ -2,10 +2,11 @@
 
 namespace App\Classes\Characters;
 
+use App\Classes\Elements\Element;
 use App\Classes\Gears\Gear;
 use App\Classes\Spells\Spell;
 
-abstract class Character
+abstract class Character extends Element
 {
 
     private bool $isAlive = true; // primary status to verify if the character is alive or not
@@ -19,37 +20,39 @@ abstract class Character
         protected float $magicalStrenght,
         protected float $physicalDefense,
         protected float $magicalDefense,
-        protected array $level = ["level" => 1, "exp" => 0],
+        protected array $level = ["level" => (int)1, "exp" => (int)0, "expNeededToLevelUp" => (int)50],
         protected ?Gear $gear = null,
         protected ?Spell $offensiveSpell = null,
         protected ?Spell $defenseSpell = null,
         protected ?Spell $healSpell = null,
     ) {
+        parent::__construct($element); 
     }
 
-    protected function damageDeals(Character $character): float
+    protected function damageDeals(Character $target): array
     { // function to calculate the damage before the damageTanked()
-        return 0.1;
+        $damageDeals = ["physicalDamage" => $this->physicalStrenght, "magicalDamage" => $this->magicalStrenght];
+        return $damageDeals;
     }
 
-    protected function damageTanked(Character $victim, float $damage): float
+    protected function damageTanked(Character $target, float $damage): float
     { // function to calculate the final damage before the getHit()
 
         return 0.1;
     }
 
-    public function getHit(Character $victim, float $damage): void
+    public function getHit(Character $target, float $damage): void
     {
         // final damage done to the opponent
-        $victim->health -= $damage;
+        $target->health -= $damage;
     }
 
-    public function state(Character $victim): bool
+    public function state(Character $target): bool
     {
         // change the value of isAlive depends on the health state
-        if($victim->health <= 0){
-            $victim->isAlive = false;
+        if ($target->health <= 0) {
+            $target->isAlive = false;
         }
-        return $victim->isAlive;
+        return $target->isAlive;
     }
 }

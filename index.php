@@ -7,4 +7,4 @@ use App\Classes\Specialisations\Draconist;
 
 $teddy = new Draconist();
 
-echo $teddy->element;
+echo !null;
