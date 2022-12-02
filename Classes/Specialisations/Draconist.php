@@ -8,7 +8,7 @@ class Draconist extends Character{
     {
         parent::__construct(
         className: "Draconist",
-        element: "Fire",
+        element: "fire",
         health: 1000,
         mana: 150,
         physicalStrenght: 200,
