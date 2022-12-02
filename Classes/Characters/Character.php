@@ -1,6 +1,8 @@
 <?php
 
-require("./Spells/Spell.php");
+namespace App\Classes\Characters;
+use App\Classes\Gears\Gear;
+use App\Classes\Spells\Spell;
 
 abstract class Character
 {
@@ -17,6 +19,7 @@ abstract class Character
         protected float $physicalDefense,
         protected float $magicalDefense,
         protected array $level = ["level" => 1, "exp" => 0],
+        protected ?Gear $gear = null,
         protected ?Spell $offensiveSpell = null,
         protected ?Spell $defenseSpell = null,
         protected ?Spell $healSpell = null,

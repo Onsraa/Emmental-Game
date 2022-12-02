@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Classes\Spells;
 abstract class Spell{
 
     function __construct(
