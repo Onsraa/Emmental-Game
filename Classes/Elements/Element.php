@@ -6,12 +6,13 @@ use App\Classes\Characters\Character;
 abstract class Element
 {
     function __construct(
-        protected ?string $element = null// the element which will define who he is weak against
+        private ?string $element = null// the element which will define who he is weak against
     ) {
     }
 
-    protected function compatibility(Character $targetted): ?string{
+    protected function compatibility(Character $targetted): ?string{ //return "efficient" | "inefficient" | null
         
+
         return null;
     }
 }
