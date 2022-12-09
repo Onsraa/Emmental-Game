@@ -6,10 +6,8 @@ namespace App\Classes\Gears\Weapons;
         function __construct(
             protected string $weaponName,
             protected string $description,
-            protected string $type, //is it a physical weapon or a magical weapon ?
-            protected float $physicalDamage,
             protected float $magicalDamage,
-            protected int $durability,
+            protected float $durability,
         )
         {
             parent::__construct($weaponName,
@@ -20,6 +18,9 @@ namespace App\Classes\Gears\Weapons;
                                 $durability,
                                 );
         }
-    }
 
-?>
+        public function break(): void
+        {
+            
+        }
+    }
