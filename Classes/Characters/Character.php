@@ -10,10 +10,11 @@ abstract class Character
 {
 
     private bool $isAlive = true; // primary status to verify if the character is alive or not
+    public Element $myElement;
 
     function __construct(
         protected string $className, // basically the specialization name of the character
-        protected Element $element, // the element which will define who he is weak against
+        protected string $element, // the element which will define who he is weak against
         protected float $health,
         protected float $mana,
         protected float $physicalStrenght, // basic stats without weapons and stuffs
@@ -26,6 +27,7 @@ abstract class Character
         protected ?Spell $defenseSpell = null,
         protected ?Spell $healSpell = null,
     ) {
+        $this->myElement = new Element($element);
     }
 
     protected function damageDeals(Character $target): array
@@ -54,4 +56,6 @@ abstract class Character
         }
         return $target->isAlive;
     }
+
+
 }
