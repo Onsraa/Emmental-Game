@@ -9,15 +9,13 @@ abstract class defendspell extends Spell
     function __construct(
         public string $spellName,
         public string $description,
-        public int $value,
-        public int $manacost,
-
+        public int $physicalValue,
+        public int $magicalValue,
+        public int $manaCost,
+        public string $elemental #element
     )
     {
-        parent::__construct(spellName: $this->spellName, description: $this->description, value: $this->value,manacost: $this->manacost);
+        parent::__construct(spellName: $this->spellName, description: $this->description, manacost: $this->manaCost);
     }
-    function castspell(Character $character, int $value,int $manacost)
-    {
-        #setdefendpoint for 1 turn, take damage and set back ?
-    }
+
 }

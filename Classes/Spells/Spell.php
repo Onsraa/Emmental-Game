@@ -1,17 +1,17 @@
 <?php
 
 namespace App\Classes\Spells;
-use App\Classes\Characters\Character;
+
 abstract class Spell{
 
     function __construct(
         public string $spellName,
         public string $description,
-        public int $value,
-        public int $manacost,
+        public int $manaCost,
     )
     {
-        
+        parent::__construct(spellName: $this->spellName, description: $this->description, manacost: $this->manaCost);
+
     }
-    abstract function castspell(Character $character,int $value,int $manacost);
+
 }
