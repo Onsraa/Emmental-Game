@@ -3,15 +3,31 @@
 namespace App\Classes\Elements;
 
 use App\Classes\Characters\Character;
-abstract class Element
+
+class Element
 {
     function __construct(
-        protected ?string $element = null// the element which will define who he is weak against
+        private ?string $element = null // the element which will define who he is weak against
     ) {
     }
 
-    protected function compatibility(Character $targetted): ?string{
-        
+    public function compatibility(Element $targettedElement): ?string
+    { //return "efficient" | "ineffective" | null
+
+        $elementCompatibility = ["fire" => "plant", "plant" => "water", "water" => "fire"];
+
+        $currentElement = $this->element;
+        $otherElement = $targettedElement->element;
+
+        foreach ($elementCompatibility as $key => $value) {
+            if ($key == $currentElement && $value == $otherElement) {
+                return "efficient";
+            } else if (
+                $key == $otherElement && $value == $currentElement
+            ) {
+                return "ineffective";
+            }
+        }
         return null;
     }
 }
