@@ -7,7 +7,6 @@ abstract class Spell{
         public string $spellName,
         public string $description,
         public int $value,
-        
     )
     {
         
