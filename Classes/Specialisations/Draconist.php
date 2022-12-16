@@ -11,8 +11,8 @@ class Draconist extends Character{
         element: "fire",
         health: 1000,
         mana: 150,
-        physicalStrenght: 200,
-        magicalStrenght: 300,
+        physicalStrength: 200,
+        magicalStrength: 300,
         physicalDefense: 80,
         magicalDefense: 30,
         );
