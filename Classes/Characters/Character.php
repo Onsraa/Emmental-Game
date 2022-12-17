@@ -6,14 +6,14 @@ use App\Classes\Elements\Element;
 use App\Classes\Gears\Gear;
 use App\Classes\Spells\Spell;
 
-abstract class Character extends Element
+abstract class Character
 {
 
     private bool $isAlive = true; // primary status to verify if the character is alive or not
 
     function __construct(
         protected string $className, // basically the specialization name of the character
-        protected string $element, // the element which will define who he is weak against
+        protected Element $element, // the element which will define who he is weak against
         protected float $health,
         protected float $mana,
         protected float $physicalStrenght, // basic stats without weapons and stuffs
@@ -26,7 +26,6 @@ abstract class Character extends Element
         protected ?Spell $defenseSpell = null,
         protected ?Spell $healSpell = null,
     ) {
-        parent::__construct($element); 
     }
 
     protected function damageDeals(Character $target): array
