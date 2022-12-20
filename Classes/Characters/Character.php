@@ -11,12 +11,11 @@ abstract class Character
 
     private bool $isAlive = true; // primary status to verify if the character is alive or not
     public Element $myElement; // element declared so it can be created as a new class in the construct function 
-
+    protected float $currentHealth;   // dynamic health points
     function __construct(
         protected string $className,       // basically the specialization name of the character
         protected string $element,         // the element which will define who he is weak against
         protected float $health,           // total fixed health points
-        protected float $currentHealth,    // dynamic health points
         protected float $mana,
         protected float $physicalStrength, // basic stats without weapons and stuffs
         protected float $magicalStrength,
@@ -83,7 +82,7 @@ abstract class Character
         $target->currentHealth -= $damage;
 
         $this->regeneratingMana();
-        
+
         $target->updateState();
 
         if (!$target->isAlive) {
@@ -116,9 +115,9 @@ abstract class Character
 
         // stats goes brrrr
         // it's default stats upgrade, it will change depending on the specialization, mage will gain more mana and magicStrength, etc..
-        $this->health += $this->health * 0.5;       
+        $this->health += $this->health * 0.5;
         $this->mana += $this->mana * 0.5;
-        $this->physicalStrength += $this->physicalStrength * 0.5; 
+        $this->physicalStrength += $this->physicalStrength * 0.5;
         $this->magicalStrength += $this->magicalStrength * 0.5;
         $this->physicalDefense += $this->physicalDefense * 0.5;
         $this->magicalDefense += $this->magicalDefense * 0.5;

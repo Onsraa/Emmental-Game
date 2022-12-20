@@ -1,20 +1,23 @@
 <?php
 
 namespace App\Classes\Specialisations;
+
 use App\Classes\Characters\Character;
-class Draconist extends Character{
+
+class Draconist extends Character
+{
 
     function __construct()
     {
         parent::__construct(
-        className: "Draconist",
-        element: "fire",
-        health: 1000,
-        mana: 150,
-        physicalStrength: 200,
-        magicalStrength: 300,
-        physicalDefense: 80,
-        magicalDefense: 30,
+            className: "Draconist",       // basically the specialization name of the character
+            element: "fire",              // the element which will define who he is weak against
+            health: 1000,                 // total fixed health points
+            mana: 300,
+            physicalStrength: 150,        // basic stats without weapons and stuffs
+            magicalStrength: 200,
+            physicalDefense: 100,
+            magicalDefense: 50,
         );
     }
 }
