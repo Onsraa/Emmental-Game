@@ -18,6 +18,11 @@ namespace App\Classes\Gears\Weapons;
                                 $durability,
                                 );
         }
-        
+
+        public function addWeaponDamages($vanillaDamages): float
+        {
+            return $vanillaDamages + $this->physicalDamage;
+        }
+
     }
 ?>

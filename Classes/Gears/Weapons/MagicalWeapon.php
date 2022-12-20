@@ -10,17 +10,18 @@ namespace App\Classes\Gears\Weapons;
             protected float $durability,
         )
         {
-            parent::__construct($weaponName,
+            parent::__construct("magical",
+                                $weaponName,
                                 $description,
-                                "magical",
                                 0,
                                 $magicalDamage,
                                 $durability,
                                 );
         }
 
-        public function break(): void
+        public function addWeaponDamages($vanillaDamages): float
         {
-            
+            return $vanillaDamages + $this->magicalDamage;
         }
+
     }

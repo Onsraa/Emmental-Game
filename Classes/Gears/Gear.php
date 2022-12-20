@@ -9,8 +9,6 @@ class Gear{
         public ?Weapon $equippedWeapon = null,
         public ?Armor $equippedArmor = null
     )
-    {
-        
+    {       
     }
-
 }

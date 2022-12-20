@@ -4,9 +4,9 @@ namespace App\Classes\Gears\Weapons;
     abstract class Weapon{
 
         function __construct(
+            protected string $type, //NOT NEEDED ?is it a physical weapon or a magical weapon ?
             protected string $weaponName,
             protected string $description,
-            protected string $type, //NOT NEEDED ?is it a physical weapon or a magical weapon ?
             protected float $physicalDamage,
             protected float $magicalDamage,
             protected float $durability,
@@ -16,7 +16,7 @@ namespace App\Classes\Gears\Weapons;
         }
 
     //Reduce durability then makes unusable the weapon
-    public function break(): void
+    public function breaks(): void
     {
         if ($this->durability - 1 == 0)
         {
@@ -28,6 +28,8 @@ namespace App\Classes\Gears\Weapons;
         }
         
     }
+
+    abstract public function addWeaponDamages($vanillaDamages): float ;
 
     //Getters: 
     public function getName(): string
