@@ -14,7 +14,7 @@ class PanFlute extends MagicalWeapon
     )
     {
         parent::__construct("Pan flute",
-                            "An old flute that belonged to Pan, a master of music and spells",
+                            "An old flute that belonged to Pan, a master of music and spells.",
                             "magical",
                             0,
                             8,

@@ -32,22 +32,26 @@ abstract class Character
         // $this->myElement = new Element($element);
     }
 
-    protected function damageDeals(Character $target): array
+    public function damageDeals(): array
     { // function to calculate the damage before the damageTanked()
         $damageDeals = ["physicalDamage" => $this->gear->equippedWeapon->addWeaponDamages($this->physicalStrength), "magicalDamage" => $this->gear->equippedWeapon->addWeaponDamages($this->magicalStrength)];
         return $damageDeals;
     }
 
-    protected function damageTanked(Character $target, float $damage): float
+    public function damageTanked(): float
     { // function to calculate the final damage before the getHit()
 
-        return 0.1;
+        return 1;
     }
 
-    public function getHit(Character $target, float $damage): void
-    {
-        // final damage done to the opponent
-        $target->health -= $damage;
+    public function getHit(Character $attacker, float $damage): void
+    {   
+        echo $attacker->className ; 
+        $attacker->gear->equippedWeapon->breaks($attacker);
+
+        echo $this->className ." (" . $this->health . ") get hit by " . $attacker->className . PHP_EOL ;
+        $this->health -= $damage;
+        echo "He has " . $this->health . " HP remaining." . PHP_EOL;
     }
 
     public function state(Character $target): bool
@@ -60,8 +64,9 @@ abstract class Character
     }
  
     public function takesWeapon(int $type, ?Weapon $weapon){
-        $this->gear->equippedWeapon = $weapon;
-        echo $this->classname . ' takes a ' . $weapon . PHP_EOL;
+        
+        $this->gear = new Gear($weapon);
+        echo $this->className . ' takes a ' . $weapon . PHP_EOL;
         // switch ($type){
         //     case 0:
         //         code

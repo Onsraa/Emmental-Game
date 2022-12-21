@@ -12,7 +12,6 @@ namespace App\Classes\Gears\Weapons;
             protected float $durability,
         )
         {
-            
         }
 
     //Reduce durability then makes unusable the weapon
@@ -26,7 +25,7 @@ namespace App\Classes\Gears\Weapons;
         {
             $this->durability -- ;
         }
-        
+        echo " 's weapon is usable for " . $this->durability . " turns before it breaks." . PHP_EOL;
     }
 
     abstract public function addWeaponDamages($vanillaDamages): float ;
@@ -34,7 +33,7 @@ namespace App\Classes\Gears\Weapons;
     //Getters: 
     public function getName(): string
     {
-        return $this->name;
+        return $this->weaponName;
     }
 
     public function getDescription(): string
@@ -49,7 +48,7 @@ namespace App\Classes\Gears\Weapons;
 
     public function __toString() 
     {
-        return "{$this->getName()}, ".lcfirst($this->getDescription()).PHP_EOL;
+        return "{$this->getName()} : ".lcfirst($this->getDescription()).PHP_EOL;
     }
     }
 
