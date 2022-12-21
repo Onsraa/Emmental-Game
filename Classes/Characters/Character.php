@@ -11,12 +11,12 @@ abstract class Character
 
     public bool $isAlive = true; // primary status to verify if the character is alive or not
     public Element $myElement; // element declared so it can be created as a new class in the construct function 
-    protected float $currentHealth;   // dynamic health points
+    public float $currentHealth;   // dynamic health points
     protected array $level = array();
 
     public function __construct(
-        protected string $className = " ",       // basically the specialization name of the character
-        protected string $element = " ",         // the element which will define who he is weak against
+        protected string $className,       // basically the specialization name of the character
+        protected string $element,         // the element which will define who he is weak against
         public float $health = 0,           // total fixed health points
         protected float $mana = 0,
         protected float $physicalStrength = 0, // basic stats without weapons and stuffs
@@ -40,6 +40,7 @@ abstract class Character
         // if the character has an offensive spell then :
         if ($this->offensiveSpell) {
             if ($this->mana >= $this->offensiveSpell->cost) {
+                $this->mana -= $this->offensiveSpell->cost;
                 return ["physicalDamage" => $this->physicalStrength * $this->offensiveSpell->value, "magicalDamage" => $this->magicalStrength * $this->offensiveSpell->value]; // |||TO DO ||| do variable that checks the type of the spell
             }
         }
@@ -50,28 +51,35 @@ abstract class Character
     protected function damageTanked(Character $attacker): array
     { // function to calculate the final damage before the hit()
 
-        $damage = $attacker->damageDeals();
-        $finalDamage = ["physicalDamage" => $damage["physicalDamage"] - $this->physicalDefense, "magicalDamage" => $damage["magicalDamage"] - $this->magicalDefense];
+        $finalDamage = $attacker->damageDeals();
+
+        $finalDamage["physicalDamage"] -= $this->physicalDefense;
+        $finalDamage["magicalDamage"] -= $this->magicalDefense;
+
+        foreach ($finalDamage as $key => $value) {
+            if ($finalDamage[$key] < 0) {
+                $finalDamage[$key] = 0;
+            }
+        }
 
         switch ($attacker->myElement->compatibility($this->myElement)) {
             case "efficient":
-                foreach ($finalDamage as $value) {
-                    $value *= 1.5;
+                foreach ($finalDamage as $key => $value) {
+                    $finalDamage[$key] *= 1.5;
                 }
             case "ineffective":
-                foreach ($finalDamage as $value) {
-                    $value *= 0.5;
+                foreach ($finalDamage as $key => $value) {
+                    $finalDamage[$key] *= 0.7;
                 }
             default:
                 break;
         }
-
         // if the character has a defensive spell then :
         if ($this->defenseSpell) {
             if ($this->currentHealth * 0.3 <= $finalDamage && $this->defenseSpell->cost <= $this->mana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
                 $this->mana -= $this->defenseSpell->cost; //mana lost from the spell cast
-                foreach ($finalDamage as $value) {
-                    $value *= $this->defenseSpell->value;
+                foreach ($finalDamage as $key => $value) {
+                    $finalDamage[$key] *= $this->defenseSpell->value;
                 }
             }
         }
@@ -79,26 +87,34 @@ abstract class Character
         return $finalDamage;
     }
 
-    public function getDamageTanked(Character $attacker): float // getter for the function fightAlgorithm
+    public function potentialDeath(Character $target): bool // look at the damage deal to determine if it can kill this turn or not
     {
-        return $this->damageTanked($attacker)["physicalDamage"] + $this->damageTanked($attacker)["magicalDamage"];
+        $damage = $target->damageTanked($this);
+        $totalDamage = $damage["physicalDamage"] + $damage["magicalDamage"];
+        if ($totalDamage >= $target->currentHealth) {
+            return true;
+        }
+        return false;
     }
 
     public function hit(Character $target): void
     {
-        $damage = $target->damageTanked($this)["physicalDamage"] + $target->damageTanked($this)["magicalDamage"];
+        $damage = $target->damageTanked($this);
+        $totalDamage = $damage["physicalDamage"] + $damage["magicalDamage"];
         // final damage done to the opponent
-        $target->currentHealth -= $damage;
+        $target->currentHealth -= $totalDamage;
 
+        echo "*********************************";
         echo PHP_EOL;
-        echo "The {$this} hit the $target for " . $damage . " !";
+        echo "The {$this} hit the {$target} for {$totalDamage} !";
+        echo PHP_EOL;
+        echo "Remain hp : [{$target->currentHealth}/{$target->health}]";
         echo PHP_EOL;
 
         $this->regeneratingMana();
 
-        $target->updateState();
-
-        if (!$target->isAlive) {
+        if ($target->currentHealth <= 0) {
+            $target->isAlive = false;
             $this->gainExp($target);
         }
     }
@@ -107,21 +123,14 @@ abstract class Character
     {
         // if the character has a heal spell then :
         if ($this->healSpell) {
-            if ($this->mana >= $this->healSpell->cost && $this->currentHealth <= $this->health * 0.6) { // conditions checked : has enough mana to cast AND has less than 60% hp
+            if ($this->mana >= $this->healSpell->cost) { // conditions checked : has enough mana to cast AND has less than 60% hp
                 $this->currentHealth += $this->healSpell->value;
+                $this->mana -= $this->healSpell->cost;
             } else {
                 $this->hit($target); // if the player doesn't have enough mana, then it hits instead of healing
             }
         } else {
             $this->hit($target);
-        }
-    }
-
-    public function updateState(): void
-    {
-        // change the value of isAlive depends on the health state
-        if ($this->currentHealth <= 0) {
-            $this->isAlive = false;
         }
     }
 
@@ -149,7 +158,6 @@ abstract class Character
 
     public function gainExp(Character $loser): void
     {
-
         $ratio = $loser->level["level"] / $this->level["level"];
 
         $this->level["exp"] += 50 * $ratio;
