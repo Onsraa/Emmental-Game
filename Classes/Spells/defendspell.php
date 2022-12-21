@@ -2,16 +2,20 @@
 
 namespace App\Classes\Spells;
 
-abstract class Spell{
+use App\Classes\Characters\Character;
 
+abstract class defendSpell extends Spell
+{
     function __construct(
         public string $spellName,
         public string $description,
+        public int $physicalValue,
+        public int $magicalValue,
         public int $manaCost,
+        public string $elemental #element
     )
     {
         parent::__construct(spellName: $this->spellName, description: $this->description, manacost: $this->manaCost);
-
     }
 
 }
