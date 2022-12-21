@@ -141,6 +141,8 @@ abstract class Character
         $this->magicalDefense += $this->magicalDefense * 0.5;
 
         echo PHP_EOL;
+        echo "The {$this} has leveled up :";
+        echo PHP_EOL;
         echo "{$this} is level " . $this->level["level"] . " !";
         echo PHP_EOL;
     }
