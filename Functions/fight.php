@@ -30,7 +30,6 @@ function fight(Character $player1, Character $player2): void
 function fightAlgorithm(Character $attacker, Character $target): string
 {
     //function that will define what action the player should do to optimize his chance to win 
-
     if ($target->getDamageTanked($attacker) >= $target->health) { // the attacker will check if he can kill him on that turn
         return "hit";
     } else {

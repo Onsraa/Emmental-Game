@@ -6,7 +6,7 @@ use App\Classes\Characters\Character;
 
 class Element
 {
-    function __construct(
+    public function __construct(
         private ?string $element = null // the element which will define who he is weak against
     ) {
     }

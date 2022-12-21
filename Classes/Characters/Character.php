@@ -9,19 +9,20 @@ use App\Classes\Spells\Spell;
 abstract class Character
 {
 
-    private bool $isAlive = true; // primary status to verify if the character is alive or not
+    public bool $isAlive = true; // primary status to verify if the character is alive or not
     public Element $myElement; // element declared so it can be created as a new class in the construct function 
     protected float $currentHealth;   // dynamic health points
-    function __construct(
-        protected string $className,       // basically the specialization name of the character
-        protected string $element,         // the element which will define who he is weak against
-        protected float $health,           // total fixed health points
-        protected float $mana,
-        protected float $physicalStrength, // basic stats without weapons and stuffs
-        protected float $magicalStrength,
-        protected float $physicalDefense,
-        protected float $magicalDefense,
-        protected array $level = ["level" => (int)1, "exp" => (int)0, "expNeededToLevelUp" => (int)50], //the higher the level, the higher the stats will be
+    protected array $level = array();
+
+    public function __construct(
+        protected string $className = " ",       // basically the specialization name of the character
+        protected string $element = " ",         // the element which will define who he is weak against
+        public float $health = 0,           // total fixed health points
+        protected float $mana = 0,
+        protected float $physicalStrength = 0, // basic stats without weapons and stuffs
+        protected float $magicalStrength = 0,
+        protected float $physicalDefense = 0,
+        protected float $magicalDefense = 0,
         protected ?Gear $gear = null, //gear that contains the weapon and the armor
         protected ?Spell $offensiveSpell = null,
         protected ?Spell $defenseSpell = null,
@@ -29,13 +30,18 @@ abstract class Character
     ) {
         $this->myElement = new Element($element);
         $this->currentHealth = $health;
+        $this->level = ["level" => (int) 1, "exp" => (int) 0, "expNeededToLevelUp" => (int) 50];  //the higher the level, the higher the stats will be
+
     }
 
     protected function damageDeals(): array
     { // function to calculate the damage before the damageTanked()
 
-        if ($this->mana >= $this->offensiveSpell->cost) {
-            return ["physicalDamage" => $this->physicalStrength * $this->offensiveSpell->value, "magicalDamage" => $this->magicalStrength * $this->offensiveSpell->value]; // |||TO DO ||| do variable that checks the type of the spell
+        // if the character has an offensive spell then :
+        if ($this->offensiveSpell) {
+            if ($this->mana >= $this->offensiveSpell->cost) {
+                return ["physicalDamage" => $this->physicalStrength * $this->offensiveSpell->value, "magicalDamage" => $this->magicalStrength * $this->offensiveSpell->value]; // |||TO DO ||| do variable that checks the type of the spell
+            }
         }
 
         return ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
@@ -60,10 +66,13 @@ abstract class Character
                 break;
         }
 
-        if ($this->currentHealth * 0.3 <= $finalDamage && $this->defenseSpell->cost <= $this->mana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
-            $this->mana -= $this->defenseSpell->cost; //mana lost from the spell cast
-            foreach ($finalDamage as $value) {
-                $value *= $this->defenseSpell->value;
+        // if the character has a defensive spell then :
+        if ($this->defenseSpell) {
+            if ($this->currentHealth * 0.3 <= $finalDamage && $this->defenseSpell->cost <= $this->mana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
+                $this->mana -= $this->defenseSpell->cost; //mana lost from the spell cast
+                foreach ($finalDamage as $value) {
+                    $value *= $this->defenseSpell->value;
+                }
             }
         }
 
@@ -81,6 +90,10 @@ abstract class Character
         // final damage done to the opponent
         $target->currentHealth -= $damage;
 
+        echo PHP_EOL;
+        echo "The {$this} hit the $target for " . $damage . " !";
+        echo PHP_EOL;
+
         $this->regeneratingMana();
 
         $target->updateState();
@@ -92,10 +105,15 @@ abstract class Character
 
     public function heal(Character $target): void
     {
-        if ($this->mana >= $this->healSpell->cost && $this->currentHealth <= $this->health * 0.6) { // conditions checked : has enough mana to cast AND has less than 60% hp
-            $this->currentHealth += $this->healSpell->value;
+        // if the character has a heal spell then :
+        if ($this->healSpell) {
+            if ($this->mana >= $this->healSpell->cost && $this->currentHealth <= $this->health * 0.6) { // conditions checked : has enough mana to cast AND has less than 60% hp
+                $this->currentHealth += $this->healSpell->value;
+            } else {
+                $this->hit($target); // if the player doesn't have enough mana, then it hits instead of healing
+            }
         } else {
-            $this->hit($target); // if the player doesn't have enough mana, then it hits instead of healing
+            $this->hit($target);
         }
     }
 

@@ -7,7 +7,7 @@ use App\Classes\Characters\Character;
 class Draconist extends Character
 {
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct(
             className: "Draconist",       // basically the specialization name of the character
