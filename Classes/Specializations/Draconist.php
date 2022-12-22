@@ -14,7 +14,7 @@ class Draconist extends Character
             element: "fire",              // the element which will define who he is weak against
             health: 1000,                 // total fixed health points
             mana: 300,
-            physicalStrength: 100,        // basic stats without weapons and stuffs
+            physicalStrength: 160,        // basic stats without weapons and stuffs
             magicalStrength: 250,
             physicalDefense: 150,
             magicalDefense: 100,

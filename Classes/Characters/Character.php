@@ -34,24 +34,34 @@ abstract class Character
 
     }
 
-    protected function damageDeals(): array
+    protected function damageDeals(bool $simulate = false): array
     { // function to calculate the damage before the damageTanked()
+
+
+        $damage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
 
         // if the character has an offensive spell then :
         if ($this->offensiveSpell) {
             if ($this->mana >= $this->offensiveSpell->cost) {
                 $this->mana -= $this->offensiveSpell->cost;
-                return ["physicalDamage" => $this->physicalStrength * $this->offensiveSpell->value, "magicalDamage" => $this->magicalStrength * $this->offensiveSpell->value]; // |||TO DO ||| do variable that checks the type of the spell
+                $damage = ["physicalDamage" => $this->physicalStrength * $this->offensiveSpell->value, "magicalDamage" => $this->magicalStrength * $this->offensiveSpell->value]; // |||TO DO ||| do variable that checks the type of the spell
             }
         }
 
-        return ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
+        if (rng(10) && !$simulate) {
+            foreach ($damage as &$value) {
+                $value *= 2;
+            }
+            array_push($damage, "critical_hit");
+        }
+
+        return $damage;
     }
 
-    protected function damageTanked(Character $attacker): array
+    protected function damageTanked(Character $attacker, bool $simulate = false): array // simulate is a parameter to check if the function called is a simulation or not, simulation is used to verify conditions for the fight algorithm
     { // function to calculate the final damage before the hit()
 
-        $finalDamage = $attacker->damageDeals();
+        $finalDamage = $attacker->damageDeals($simulate);
 
         $finalDamage["physicalDamage"] -= $this->physicalDefense;
         $finalDamage["magicalDamage"] -= $this->magicalDefense;
@@ -91,7 +101,7 @@ abstract class Character
 
     public function potentialDeath(Character $target): bool // look at the damage deal to determine if it can kill this turn or not
     {
-        $damage = $target->damageTanked($this);
+        $damage = $target->damageTanked($this, simulate: true);
         $totalDamage = $damage["physicalDamage"] + $damage["magicalDamage"];
         if ($totalDamage >= $target->currentHealth) {
             return true;
@@ -106,7 +116,7 @@ abstract class Character
         // final damage done to the opponent
         $target->currentHealth -= $totalDamage;
 
-        echo PHP_EOL . "******************************************" . PHP_EOL;        ;
+        echo PHP_EOL . "******************************************" . PHP_EOL;;
         switch ($this->myElement->compatibility($target->myElement)) {
             case "efficient":
                 echo PHP_EOL . "Damage is effective ! It gains 50% more damage." . PHP_EOL;
