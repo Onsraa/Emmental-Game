@@ -52,7 +52,6 @@ abstract class Character
             foreach ($damage as &$value) {
                 $value *= 2;
             }
-            array_push($damage, "critical_hit");
         }
 
         return $damage;
