@@ -67,10 +67,12 @@ abstract class Character
                 foreach ($finalDamage as &$value) {
                     $value *= 1.5;
                 }
+                break;
             case "ineffective":
                 foreach ($finalDamage as &$value) {
                     $value *= 0.7;
                 }
+                break;
             default:
                 break;
         }
@@ -104,9 +106,21 @@ abstract class Character
         // final damage done to the opponent
         $target->currentHealth -= $totalDamage;
 
-        echo "*********************************";
+        echo PHP_EOL . "******************************************" . PHP_EOL;        ;
+        switch ($this->myElement->compatibility($target->myElement)) {
+            case "efficient":
+                echo PHP_EOL . "Damage is effective ! It gains 50% more damage." . PHP_EOL;
+                break;
+            case "ineffective":
+                echo PHP_EOL . "Misery ! The damage lost 30% of its value because of the element.." . PHP_EOL;
+                break;
+            default:
+                break;
+        }
+
         echo PHP_EOL;
         echo "The {$this} hit the {$target} for {$totalDamage} !";
+        echo PHP_EOL;
         echo PHP_EOL;
         echo "Remain hp : [{$target->currentHealth}/{$target->health}]";
         echo PHP_EOL;
