@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\Specialisations;
+namespace App\Classes\Specializations;
 
 use App\Classes\Characters\Character;
 
