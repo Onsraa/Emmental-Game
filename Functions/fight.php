@@ -9,6 +9,8 @@ function fight(Character $player1, Character $player2): void
 
     while ($player1->isAlive && $player2->isAlive) {
 
+        echo PHP_EOL . "******************************************" . PHP_EOL;;
+
         if ($round % 2) {
             switch (fightAlgorithm($player1, $player2)) {
                 case "hit":

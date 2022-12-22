@@ -3,7 +3,7 @@
 namespace App\Classes\Specializations;
 
 use App\Classes\Characters\Character;
-
+use App\Classes\Spells\Offensive\DragonBreath;
 class Draconist extends Character
 {
 
@@ -18,6 +18,7 @@ class Draconist extends Character
             magicalStrength: 250,
             physicalDefense: 150,
             magicalDefense: 100,
+            offensiveSpell: new DragonBreath(),
         );
     }
 }
