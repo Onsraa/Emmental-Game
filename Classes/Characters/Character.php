@@ -56,20 +56,20 @@ abstract class Character
         $finalDamage["physicalDamage"] -= $this->physicalDefense;
         $finalDamage["magicalDamage"] -= $this->magicalDefense;
 
-        foreach ($finalDamage as $key => $value) {
-            if ($finalDamage[$key] < 0) {
-                $finalDamage[$key] = 0;
+        foreach ($finalDamage as &$value) {
+            if ($value < 0) {
+                $value = 0;
             }
         }
 
         switch ($attacker->myElement->compatibility($this->myElement)) {
             case "efficient":
-                foreach ($finalDamage as $key => $value) {
-                    $finalDamage[$key] *= 1.5;
+                foreach ($finalDamage as &$value) {
+                    $value *= 1.5;
                 }
             case "ineffective":
-                foreach ($finalDamage as $key => $value) {
-                    $finalDamage[$key] *= 0.7;
+                foreach ($finalDamage as &$value) {
+                    $value *= 0.7;
                 }
             default:
                 break;
@@ -78,8 +78,8 @@ abstract class Character
         if ($this->defenseSpell) {
             if ($this->currentHealth * 0.3 <= $finalDamage && $this->defenseSpell->cost <= $this->mana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
                 $this->mana -= $this->defenseSpell->cost; //mana lost from the spell cast
-                foreach ($finalDamage as $key => $value) {
-                    $finalDamage[$key] *= $this->defenseSpell->value;
+                foreach ($finalDamage as &$value) {
+                    $value *= $this->defenseSpell->value;
                 }
             }
         }
