@@ -4,108 +4,230 @@ namespace App\Classes\Characters;
 
 use App\Classes\Elements\Element;
 use App\Classes\Gears\Gear;
-use App\Classes\Spells\defendspell;
-use App\Classes\Spells\healSpell;
-use App\Classes\Spells\offensivespell;
-use App\Classes\Spells\Spell;
-use App\Classes\Gears\Weapons\Weapon;
+use App\Classes\Spells\Offensive\Offensive;
+use App\Classes\Spells\Defensive\Defensive;
+use App\Classes\Spells\Heal\Heal;
 
 abstract class Character
 {
 
-    private bool $isAlive = true; // primary status to verify if the character is alive or not
-    public Element $myElement;
+    public bool $isAlive = true; // primary status to verify if the character is alive or not
+    public Element $myElement; // element declared so it can be created as a new class in the construct function 
+    public float $currentHealth;   // dynamic health points
+    protected array $level = array();
+    protected float $bonusPhysicalStrength = 0;
+    protected float $bonusMagicalStrength = 0;
+    protected float $bonusPhysicalDefense = 0;
+    protected float $bonusMagicalDefense = 0;
 
-    function __construct(
-        protected string $className, // basically the specialization name of the character
-        protected ?Element $element, // the element which will define who he is weak against
-        protected float $health,
-        protected float $mana,
-        protected float $physicalStrength, // basic stats without weapons and stuffs
-        protected float $magicalStrength,
-        protected float $physicalStrengthBonus,
-        protected float $magicalStrengthBonus,
-        protected float $physicalDefense,
-        protected float $magicalDefense,
-        protected float $physicalDefenseBonus,
-        protected float $magicalDefenseBonus,
-        protected array $level = ["level" => (int)1, "exp" => (int)0, "expNeededToLevelUp" => (int)50],
-        protected ?Gear $gear = null,
-        protected ?offensiveSpell $offensiveSpell = null,
-        protected ?defendSpell $defenseSpell = null,
-        protected ?healSpell $healSpell = null,
+    public function __construct(
+        protected string $className,       // basically the specialization name of the character
+        protected string $element,         // the element which will define who he is weak against
+        public float $health = 0,           // total fixed health points
+        protected float $mana = 0,
+        protected float $physicalStrength = 0, // basic stats without weapons and stuffs
+        protected float $magicalStrength = 0,
+        protected float $physicalDefense = 0,
+        protected float $magicalDefense = 0,
+        protected ?Gear $gear = null, //gear that contains the weapon and the armor
+        protected ?Offensive $offensiveSpell = null,
+        protected ?Defensive $defenseSpell = null,
+        protected ?Heal $healSpell = null,
     ) {
         $this->myElement = new Element($element);
-    }
-    protected function defendSpell():void
-    {
-        if($this->mana >= $this->defenseSpell->manaCost){
-            $this->magicalDefenseBonus += $this->defenseSpell->magicalValue;
-            $this->physicalDefenseBonus+= $this->defenseSpell->physicalValue;
-        }
-    }
-    protected function selfHeal():void
-    {   if($this->mana >= $this->healSpell->manaCost){
-        echo'Casting '.$this->healSpell->spellName.'.';
-        $this->health += $this->healSpell->value;
-        $this->mana -= $this->healSpell->manaCost;
-        }
-    }
-    protected function attackSpellShortRanged():void
-    {
-        if ($this->mana >= $this->healSpell->manaCost) {
-            $this->magicalStrengthBonus += $this->offensiveSpell->value;
-            $this->magicalStrengthBonus += $this->offensiveSpell->value;
-            $this->mana -= $this->offensiveSpell->manaCost;
+        $this->currentHealth = $health;
+        $this->level = ["level" => (int) 1, "exp" => (int) 0, "expNeededToLevelUp" => (int) 50];  //the higher the level, the higher the stats will be
 
-        }
     }
-    protected function damageDeals(Character $target): array
+    public function setAttackSpel(Offensive $name){
+        $this->offensiveSpell = $name;
+    }
+    public function setDefenseSpel(Defensive $name){
+        $this->defenseSpell=$name;
+    }
+    public function setHealSpel(Heal $name){
+        $this->healSpell=$name;
+    }
+    public function showInformation():void
+    {
+        echo $this.PHP_EOL;
+        echo "HP: ".$this->health.PHP_EOL;
+        echo "Magical damage: ".$this->magicalStrength.PHP_EOL;
+        echo "Physical damage: ".$this->physicalStrength.PHP_EOL;
+        echo "Magical defense: ".$this->magicalDefense.PHP_EOL;
+        echo "Physical defense: ".$this->physicalDefense.PHP_EOL;
+
+    }
+    protected function damageDeals(bool $simulate = false): array
     { // function to calculate the damage before the damageTanked()
-        return ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
 
-    }
 
-    protected function damageDeal(Character $target, float $damage): void
-    { // function to calculate the final damage before the getHit()
-        if ($this->element == $target->element){ #If 2 character have same element
-            if($this->magicalStrength != 0){ #If This character using magic damage
-               $damage = $damage - $target->magicalDefense - $target->magicalDefenseBonus;
+        $damage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
 
-            } else { #If This character using physic dmg
-                $damage = $damage - $target->physicalDefense - $target->physicalDefenseBonus;
-            }
+        // if the character has an offensive spell then :
+        if ($this->offensiveSpell) {
+            if ($this->mana >= $this->offensiveSpell->cost) {
+                if(!$simulate){
+                    echo PHP_EOL . "An offensive spell is casted : [{$this->offensiveSpell->spellName} : {$this->offensiveSpell->description}" . PHP_EOL;
+                }
+                $this->mana -= $this->offensiveSpell->cost;
+                $damage["physicalDamage"] = $this->offensiveSpell->damage["physicalDamage"];
+                $damage["magicalDamage"] = $this->offensiveSpell->damage["magicalDamage"];
 
-        } else if ($this->element->compatibility($target->element) == "efficient"){ #If $this->element effect $target->element
-            if($this->magicalStrength != 0){ #If This character using magic damage
-                $damage = 2*$damage - ($target->magicalDefense + $target->magicalDefenseBonus);
-            } else { #If This character using physic dmg
-                $damage = 2*$damage - ($target->physicalDefense + $target->physicalDefenseBonus);
-            }
-        }else { #Last case
-            if($this->magicalStrength != 0){ #If This character using magic damage
-                $damage = 0.5*$damage - ($target->magicalDefense + $target->magicalDefenseBonus);
-            } else { #If This character using physic dmg
-                $damage = 0.5*$damage - ($target->physicalDefense + $target->physicalDefenseBonus);
             }
         }
-        $this->hit($target,$damage);
+
+        //critical chance | damage multiplied by 2
+        if (rng(15) && !$simulate) { // 15% crit chance 
+            foreach ($damage as &$value) {
+                $value *= 2;
+            }
+            array_push($damage, 0);  #OP
+        }
+
+        return $damage;
     }
 
-    public function hit(Character $target, float $damage): void
+    protected function damageTanked(Character $attacker, bool $simulate = false): array // simulate is a parameter to check if the function called is a simulation or not, simulation is used to verify conditions for the fight algorithm
+    { // function to calculate the final damage before the hit()
+
+        $finalDamage = $attacker->damageDeals($simulate);
+
+        $finalDamage["physicalDamage"] -= $this->physicalDefense;
+        $finalDamage["magicalDamage"] -= $this->magicalDefense;
+
+        foreach ($finalDamage as &$value) {
+            if ($value < 0) {
+                $value = 0;  #?
+            }
+        }
+
+        switch ($attacker->myElement->compatibility($this->myElement)) {
+            case "efficient":
+                foreach ($finalDamage as &$value) {
+                    $value *= 1.5;
+                }
+                break;
+            case "ineffective":
+                foreach ($finalDamage as &$value) {
+                    $value *= 0.7;
+                }
+                break;
+            default:
+                break;
+        }
+        // if the character has a defensive spell then :
+        if ($this->defenseSpell) {
+            if ($this->currentHealth * 0.3 <= $finalDamage && $this->defenseSpell->cost <= $this->mana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
+                $this->mana -= $this->defenseSpell->cost; //mana lost from the spell cast
+                foreach ($finalDamage as &$value) {
+                    $value *= $this->defenseSpell->defense;
+                }
+            }
+        }
+
+        return $finalDamage;
+    }
+
+    public function potentialDeath(Character $target): bool // look at the damage deal to determine if it can kill this turn or not
     {
+        $damage = $target->damageTanked($this, simulate: true);
+        $totalDamage = $damage["physicalDamage"] + $damage["magicalDamage"];
+        if ($totalDamage >= $target->currentHealth) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hit(Character $target): void
+    {
+        $damage = $target->damageTanked($this);
+        $totalDamage = $damage["physicalDamage"] + $damage["magicalDamage"];
         // final damage done to the opponent
-        $target->health -= $damage;
-    }
+        $target->currentHealth -= $totalDamage;
 
-    public function state(Character $target): bool
-    {
-        // change the value of isAlive depends on the health state
-        if ($target->health <= 0) {
-            $target->isAlive = false;
+        if (isset($damage[0])) {
+            echo PHP_EOL . "Critical hit !" . PHP_EOL;
         }
-        return $target->isAlive;
+        switch ($this->myElement->compatibility($target->myElement)) {
+            case "efficient":
+                echo PHP_EOL . "Damage is effective ! It gains 50% more damage." . PHP_EOL;
+                break;
+            case "ineffective":
+                echo PHP_EOL . "Misery ! The damage lost 30% of its value because of the element.." . PHP_EOL;
+                break;
+            default:
+                break;
+        }
+
+        echo PHP_EOL;
+        echo "The {$this} hit the {$target} for {$totalDamage} !";
+        echo PHP_EOL;
+        echo PHP_EOL;
+        echo "Remain hp : [{$target->currentHealth}/{$target->health}]";
+        echo PHP_EOL;
+
+        $this->regeneratingMana();
+
+        if ($target->currentHealth <= 0) {
+            $target->isAlive = false;
+            $this->gainExp($target);
+        }
     }
 
+    public function heal(Character $target): void
+    {
+        // if the character has a heal spell then :
+        if ($this->healSpell) {
+            if ($this->mana >= $this->healSpell->cost) { // conditions checked : has enough mana to cast AND has less than 60% hp
+                $this->currentHealth += $this->healSpell->heal;
+                $this->mana -= $this->healSpell->cost;
+            } else {
+                $this->hit($target); // if the player doesn't have enough mana, then it hits instead of healing
+            }
+        } else {
+            $this->hit($target);
+        }
+    }
 
+    public function hasLeveledUp(): void
+    {
+        $this->level["level"] += 1;
+        $this->level["exp"] = 0;
+        $this->level["expNeededToLevelUp"] *= 1.5;
+
+        // stats goes brrrr
+        // it's default stats upgrade, it will change depending on the specialization, mage will gain more mana and magicStrength, etc..
+        $this->health += $this->health * 0.5;
+        $this->mana += $this->mana * 0.5;
+        $this->physicalStrength += $this->physicalStrength * 0.5;
+        $this->magicalStrength += $this->magicalStrength * 0.5;
+        $this->physicalDefense += $this->physicalDefense * 0.5;
+        $this->magicalDefense += $this->magicalDefense * 0.5;
+
+        echo PHP_EOL;
+        echo "The {$this} has leveled up :";
+        echo PHP_EOL;
+        echo "{$this} is level " . $this->level["level"] . " !";
+        echo PHP_EOL;
+    }
+
+    public function gainExp(Character $loser): void
+    {
+        $ratio = $loser->level["level"] / $this->level["level"];
+
+        $this->level["exp"] += 50 * $ratio;
+        if ($this->level["exp"] >= $this->level["expNeededToLevelUp"]) {
+            $this->hasLeveledUp();
+        }
+    }
+
+    private function regeneratingMana(): void
+    {
+        $this->mana += 20 * $this->level["level"];
+    }
+    public function __toString()
+    {
+        return $this->className;
+    }
 }
