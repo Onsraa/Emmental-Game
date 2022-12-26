@@ -7,8 +7,8 @@ class Spell
 
     public function __construct(
         public string $spellName,
+        public string $description,
         public int $cost,
-        public int $value
     ) {
     }
 }
