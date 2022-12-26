@@ -4,7 +4,6 @@ namespace App\Classes\Gears\Weapons;
     abstract class Weapon{
 
         function __construct(
-            protected string $type, //NOT NEEDED ?is it a physical weapon or a magical weapon ?
             protected string $weaponName,
             protected string $description,
             protected float $physicalDamage,
@@ -51,5 +50,3 @@ namespace App\Classes\Gears\Weapons;
         return "{$this->getName()} : ".lcfirst($this->getDescription()).PHP_EOL;
     }
     }
-
-?>

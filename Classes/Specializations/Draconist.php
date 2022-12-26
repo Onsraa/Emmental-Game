@@ -19,7 +19,6 @@ class Draconist extends Character
             physicalDefense: 150,
             magicalDefense: 100,
             offensiveSpell: new DragonBreath(),
-
         );
     }
 }

@@ -8,10 +8,11 @@ class WandOfCallipso extends MagicalWeapon
 {
     function __construct()
     {
-        parent::__construct("Callipso's wand",
-                            "An old wand that belonged to Callipso, a master of alchemy.",
-                            10,
-                            20,
-                            );
+        parent::__construct(
+            "Callipso's wand",
+            "An old wand that belonged to Callipso, a master of alchemy.",
+            10,
+            20,
+        );
     }
 }

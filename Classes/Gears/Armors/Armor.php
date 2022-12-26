@@ -16,5 +16,3 @@ namespace App\Classes\Gears\Weapons;
             
         }
     }
-
-?>

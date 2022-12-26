@@ -3,7 +3,7 @@
 namespace App\Classes\Spells\Heal;
 
 use App\CLasses\Spells\Spell;
-class Heal extends Spell{
+abstract class Heal extends Spell{
 
     public function __construct(
         public string $spellName,

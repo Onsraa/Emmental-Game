@@ -2,8 +2,6 @@
 
 namespace App\Classes\Elements;
 
-use App\Classes\Characters\Character;
-
 class Element
 {
     public function __construct(
