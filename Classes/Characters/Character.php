@@ -46,7 +46,8 @@ abstract class Character
         if ($this->offensiveSpell) {
             if ($this->mana >= $this->offensiveSpell->cost) {
                 if(!$simulate){
-                    echo PHP_EOL . "An offensive spell is casted : [{$this->offensiveSpell->spellName} : {$this->offensiveSpell->description}" . PHP_EOL;
+                    echo PHP_EOL . "An offensive spell is casted : [{$this->offensiveSpell->spellName} : {$this->offensiveSpell->description}]" . PHP_EOL;
+                    echo "Spell cost : {$this->offensiveSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} ". PHP_EOL;
                 }
                 $this->mana -= $this->offensiveSpell->cost;
                 $damage["physicalDamage"] = $this->offensiveSpell->damage["physicalDamage"];
