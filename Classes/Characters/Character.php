@@ -14,6 +14,7 @@ abstract class Character
     public bool $isAlive = true; // primary status to verify if the character is alive or not
     public Element $myElement; // element declared so it can be created as a new class in the construct function 
     public float $currentHealth;   // dynamic health points
+    public float $currentMana;   // dynamic mana points
     protected array $level = array();
 
     public function __construct(
@@ -25,13 +26,15 @@ abstract class Character
         protected float $magicalStrength = 0,
         protected float $physicalDefense = 0,
         protected float $magicalDefense = 0,
-        protected ?Gear $gear = null, //gear that contains the weapon and the armor
+        protected ?Gear $gear = null, //gear that contains the weapon and the armor (equipped)
+        protected ?Gear $bag = null, // gear that contains the weapon and the armor (broken or not)
         protected ?Offensive $offensiveSpell = null,
         protected ?Defensive $defenseSpell = null,
         protected ?Heal $healSpell = null,
     ) {
         $this->myElement = new Element($element);
         $this->currentHealth = $health;
+        $this->currentMana = $mana;
         $this->level = ["level" => (int) 1, "exp" => (int) 0, "expNeededToLevelUp" => (int) 50];  //the higher the level, the higher the stats will be
 
     }
@@ -43,16 +46,15 @@ abstract class Character
         $damage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
 
         // if the character has an offensive spell then :
-        if ($this->offensiveSpell) {
-            if ($this->mana >= $this->offensiveSpell->cost) {
-                if(!$simulate){
+        if ($this->offensiveSpell) { 
+            if ($this->currentMana >= $this->offensiveSpell->cost) {
+                if (!$simulate) {
                     echo PHP_EOL . "An offensive spell is casted : [{$this->offensiveSpell->spellName} : {$this->offensiveSpell->description}]" . PHP_EOL;
                     echo "Spell cost : {$this->offensiveSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} ". PHP_EOL;
                 }
-                $this->mana -= $this->offensiveSpell->cost;
+                $this->currentMana -= $this->offensiveSpell->cost;
                 $damage["physicalDamage"] = $this->offensiveSpell->damage["physicalDamage"];
                 $damage["magicalDamage"] = $this->offensiveSpell->damage["magicalDamage"];
-
             }
         }
 
@@ -61,7 +63,7 @@ abstract class Character
             foreach ($damage as &$value) {
                 $value *= 2;
             }
-            array_push($damage, 0);
+            array_push($damage, 0); // indication do check if the damage is a crit or not, it will push a value to the array : $damage = [0 : 0, "physicalDamage" : 123, "magicalDamage" : 123]
         }
 
         return $damage;
@@ -97,8 +99,8 @@ abstract class Character
         }
         // if the character has a defensive spell then :
         if ($this->defenseSpell) {
-            if ($this->currentHealth * 0.3 <= $finalDamage && $this->defenseSpell->cost <= $this->mana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
-                $this->mana -= $this->defenseSpell->cost; //mana lost from the spell cast
+            if ($this->currentHealth * 0.3 <= $finalDamage && $this->defenseSpell->cost <= $this->currentMana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
+                $this->currentMana -= $this->defenseSpell->cost; //mana lost from the spell cast
                 foreach ($finalDamage as &$value) {
                     $value *= $this->defenseSpell->defense;
                 }
@@ -158,9 +160,9 @@ abstract class Character
     {
         // if the character has a heal spell then :
         if ($this->healSpell) {
-            if ($this->mana >= $this->healSpell->cost) { // conditions checked : has enough mana to cast AND has less than 60% hp
+            if ($this->currentMana >= $this->healSpell->cost) { // conditions checked : has enough mana to cast AND has less than 60% hp
                 $this->currentHealth += $this->healSpell->heal;
-                $this->mana -= $this->healSpell->cost;
+                $this->currentMana -= $this->healSpell->cost;
             } else {
                 $this->hit($target); // if the player doesn't have enough mana, then it hits instead of healing
             }
@@ -203,10 +205,16 @@ abstract class Character
 
     private function regeneratingMana(): void
     {
-        $this->mana += 20 * $this->level["level"];
+        $this->currentMana += 20 * $this->level["level"];
     }
     public function __toString()
     {
         return $this->className;
+    }
+    public function restore()
+    {
+        $this->currentHealth = $this->health; //reset health after fight
+        $this->currentMana = $this->mana; //reset health after fight
+        $this->gear = $this->bag; //reset broken gear
     }
 }
