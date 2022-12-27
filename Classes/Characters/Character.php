@@ -11,23 +11,23 @@ use App\Classes\Spells\Heal\Heal;
 abstract class Character
 {
 
-    public bool $isAlive = true; // primary status to verify if the character is alive or not
-    public Element $myElement; // element declared so it can be created as a new class in the construct function 
-    public float $currentHealth;   // dynamic health points
-    public float $currentMana;   // dynamic mana points
+    public bool $isAlive = true;    // primary status to verify if the character is alive or not
+    public Element $myElement;      // element declared so it can be created as a new class in the construct function 
+    public float $currentHealth;    // dynamic health points
+    public float $currentMana;      // dynamic mana points
     protected array $level = array();
 
     public function __construct(
-        protected string $className,       // basically the specialization name of the character
-        protected string $element,         // the element which will define who he is weak against
-        public float $health = 0,           // total fixed health points
+        protected string $className,           // basically the specialization name of the character
+        protected string $element,             // the element which will define who he is weak against
+        public float $health = 0,              // total fixed health points
         protected float $mana = 0,
         protected float $physicalStrength = 0, // basic stats without weapons and stuffs
         protected float $magicalStrength = 0,
         protected float $physicalDefense = 0,
         protected float $magicalDefense = 0,
-        protected ?Gear $gear = null, //gear that contains the weapon and the armor (equipped)
-        protected ?Gear $bag = null, // gear that contains the weapon and the armor (broken or not)
+        protected ?Gear $gear = null,          // gear that contains the weapon and the armor (equipped)
+        protected ?Gear $bag = null,           // gear that contains the weapon and the armor (broken or not)
         protected ?Offensive $offensiveSpell = null,
         protected ?Defensive $defensiveSpell = null,
         protected ?Heal $healSpell = null,
@@ -36,7 +36,6 @@ abstract class Character
         $this->currentHealth = $health;
         $this->currentMana = $mana;
         $this->level = ["level" => (int) 1, "exp" => (int) 0, "expNeededToLevelUp" => (int) 50];  //the higher the level, the higher the stats will be
-
     }
 
     protected function damageDeals(bool $simulate = false): array
@@ -65,7 +64,6 @@ abstract class Character
             }
             array_push($damage, 0); // indication do check if the damage is a crit or not, it will push a value to the array : $damage = [0 : 0, "physicalDamage" : 123, "magicalDamage" : 123]
         }
-
         return $damage;
     }
 
