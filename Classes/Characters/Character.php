@@ -18,6 +18,7 @@ abstract class Character
     protected array $level = array();
 
     public function __construct(
+        private string $username,
         protected string $className,           // basically the specialization name of the character
         protected string $element,             // the element which will define who he is weak against
         public float $health = 0,              // total fixed health points
@@ -209,12 +210,40 @@ abstract class Character
     }
     public function __toString()
     {
-        return $this->className;
+        return $this->username;
     }
     public function restore()
     {
         $this->currentHealth = $this->health; //reset health after fight
         $this->currentMana = $this->mana; //reset health after fight
         $this->gear = $this->bag; //reset broken gear
+    }
+
+    public function showSpec()
+    {
+
+        echo PHP_EOL . "+-----------------------------------------------+" . PHP_EOL;
+        
+        echo PHP_EOL . "***************Character informations***************" .PHP_EOL;
+        echo "  Username : {$this->username}" .PHP_EOL;
+        echo "  Class : {$this->className}" .PHP_EOL; 
+        echo "  Element : {$this->element}" .PHP_EOL;
+        
+        echo PHP_EOL . "***************Stats***************" .PHP_EOL;
+        echo "  Health : {$this->health}" .PHP_EOL;
+        echo "  Mana : {$this->mana}" .PHP_EOL;
+        echo "  Physical Strength : {$this->physicalStrength}" .PHP_EOL;
+        echo "  Magical Strength : {$this->magicalStrength}" .PHP_EOL;
+        echo "  Physical Defense : {$this->physicalDefense}" .PHP_EOL;
+        echo "  Magical Defense : {$this->magicalDefense}" .PHP_EOL;
+
+        echo PHP_EOL . "***************Spells***************" .PHP_EOL;
+        echo PHP_EOL . "Offensive : ";
+        echo ($this->offensiveSpell) ? "{$this->offensiveSpell->spellName}" : "empty";
+        echo PHP_EOL . "Defensive : ";
+        echo ($this->defensiveSpell) ? "{$this->defensiveSpell->spellName}" : "empty";
+        echo PHP_EOL . "Heal : ";
+        echo ($this->healSpell) ? "{$this->healSpell->spellName}" : "empty";
+        echo PHP_EOL . "+-----------------------------------------------+" . PHP_EOL;
     }
 }
