@@ -7,9 +7,10 @@ use App\Classes\Spells\Offensive\DragonBreath;
 
 class Draconist extends Character
 {
-    public function __construct()
+    public function __construct($username)
     {
         parent::__construct(
+            username: $username,
             className: "Draconist",       // basically the specialization name of the character
             element: "fire",              // the element which will define who he is weak against
             health: 1000,                 // total fixed health points
