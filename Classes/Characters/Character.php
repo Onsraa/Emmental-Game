@@ -29,7 +29,7 @@ abstract class Character
         protected ?Gear $gear = null, //gear that contains the weapon and the armor (equipped)
         protected ?Gear $bag = null, // gear that contains the weapon and the armor (broken or not)
         protected ?Offensive $offensiveSpell = null,
-        protected ?Defensive $defenseSpell = null,
+        protected ?Defensive $defensiveSpell = null,
         protected ?Heal $healSpell = null,
     ) {
         $this->myElement = new Element($element);
@@ -46,13 +46,13 @@ abstract class Character
         $damage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
 
         // if the character has an offensive spell then :
-        if ($this->offensiveSpell) { 
+        if ($this->offensiveSpell) {
             if ($this->currentMana >= $this->offensiveSpell->cost) {
                 if (!$simulate) {
                     echo PHP_EOL . "An offensive spell is casted : [{$this->offensiveSpell->spellName} : {$this->offensiveSpell->description}]" . PHP_EOL;
-                    echo "Spell cost : {$this->offensiveSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} ". PHP_EOL;
+                    $this->currentMana -= $this->offensiveSpell->cost;
+                    echo "Spell cost : {$this->offensiveSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} " . PHP_EOL;
                 }
-                $this->currentMana -= $this->offensiveSpell->cost;
                 $damage["physicalDamage"] = $this->offensiveSpell->damage["physicalDamage"];
                 $damage["magicalDamage"] = $this->offensiveSpell->damage["magicalDamage"];
             }
@@ -98,11 +98,12 @@ abstract class Character
                 break;
         }
         // if the character has a defensive spell then :
-        if ($this->defenseSpell) {
-            if ($this->currentHealth * 0.3 <= $finalDamage && $this->defenseSpell->cost <= $this->currentMana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
-                $this->currentMana -= $this->defenseSpell->cost; //mana lost from the spell cast
+        if ($this->defensiveSpell) {
+            if ($this->currentHealth * 0.3 <= $finalDamage && $this->defensiveSpell->cost <= $this->currentMana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
+                $this->currentMana -= $this->defensiveSpell->cost; //mana lost from the spell cast
+                echo "Spell cost : {$this->defensiveSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} " . PHP_EOL;
                 foreach ($finalDamage as &$value) {
-                    ($this->defenseSpell->factor == "fixed") ? $value += $this->defenseSpell->defense : $value *= $this->defenseSpell->defense;
+                    ($this->defensiveSpell->factor == "fixed") ? $value += $this->defensiveSpell->defense : $value *= $this->defensiveSpell->defense;
                 }
             }
         }
@@ -163,6 +164,7 @@ abstract class Character
             if ($this->currentMana >= $this->healSpell->cost) { // conditions checked : has enough mana to cast AND has less than 60% hp
                 ($this->healSpell->factor == "fixed") ? $this->currentHealth += $this->healSpell->heal : $this->currentHealth *= $this->healSpell->heal;
                 $this->currentMana -= $this->healSpell->cost;
+                echo "Spell cost : {$this->healSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} " . PHP_EOL;
             } else {
                 $this->hit($target); // if the player doesn't have enough mana, then it hits instead of healing
             }

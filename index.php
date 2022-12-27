@@ -12,4 +12,6 @@ $player1 = new Draconist();
 $player2 = new Chaman();
 $player3 = new FlowerFairy();
 
+system('cls');
+
 fight($player1, $player3);
