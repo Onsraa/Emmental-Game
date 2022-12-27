@@ -7,6 +7,12 @@ use App\Classes\Gears\Gear;
 use App\Classes\Spells\Offensive\Offensive;
 use App\Classes\Spells\Defensive\Defensive;
 use App\Classes\Spells\Heal\Heal;
+use App\Classes\Gears\Weapons\Armor;
+use App\Classes\Gears\Weapons\MagicalWeapons\PanFlute;
+use App\Classes\Spells\Spell;
+use App\Classes\Gears\Weapons\Weapon; 
+use App\Classes\Gears\Weapons\MagicalWeapons\WandOfCallipso;
+use App\Classes\Gears\Weapons\PhysicalWeapons\DevilAxe;
 
 abstract class Character
 {
@@ -261,4 +267,33 @@ abstract class Character
         echo ($this->healSpell) ? "{$this->healSpell->spellName}" : "empty";
         echo PHP_EOL . "+-----------------------------------------------+" . PHP_EOL;
     }
+
+    public function takesWeapon(int $weapon){
+        $panFlute = new PanFlute();
+        $WandOfCallipso = new WandOfCallipso();
+        $devilAxe = new DevilAxe();
+
+        $canUse = [0 =>$panFlute, 1 =>$WandOfCallipso, 2 =>$devilAxe];
+
+
+        $this->gear = new Gear($canUse[$weapon]);
+        echo $this->className . ' takes a ' . $canUse[$weapon] . PHP_EOL;
+    }
+
+    public function takesArmor()
+    {      
+        echo $this->className . ' takes an armor' . PHP_EOL ;   
+    }
+
+    public function takesGear(){
+        if (rand(0,1) == 0 ){
+            $this->takesWeapon(rand(0,2));
+        } else 
+        {
+            $this->takesArmor();
+        }
+}
+public function showGear(){
+    echo 'The character has :' . $this->gear . PHP_EOL;
+}
 }

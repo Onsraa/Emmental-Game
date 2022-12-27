@@ -3,7 +3,8 @@
 namespace App\Classes\Gears\Weapons;
     abstract class Weapon{
 
-        function __construct(
+        public function __construct(
+            protected string $type, //NOT NEEDED ?is it a physical weapon or a magical weapon ?
             protected string $weaponName,
             protected string $description,
             protected float $physicalDamage,
@@ -27,7 +28,7 @@ namespace App\Classes\Gears\Weapons;
         echo " 's weapon is usable for " . $this->durability . " turns before it breaks." . PHP_EOL;
     }
 
-    abstract public function addWeaponDamages($vanillaDamages): array ;
+    abstract public function addWeaponDamages(array $vanillaDamages): array ;
 
     //Getters: 
     public function getName(): string
