@@ -41,8 +41,9 @@ abstract class Character
     protected function damageDeals(bool $simulate = false): array
     { // function to calculate the damage before the damageTanked()
 
-
-        $damage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
+       
+        $baseDamage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
+        $damage = $this->gear->equippedWeapon->addWeaponDamages($baseDamage);
 
         // if the character has an offensive spell then :
         if ($this->offensiveSpell) {

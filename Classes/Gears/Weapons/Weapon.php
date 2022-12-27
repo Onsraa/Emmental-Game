@@ -27,7 +27,7 @@ namespace App\Classes\Gears\Weapons;
         echo " 's weapon is usable for " . $this->durability . " turns before it breaks." . PHP_EOL;
     }
 
-    abstract public function addWeaponDamages($vanillaDamages): float ;
+    abstract public function addWeaponDamages($vanillaDamages): array ;
 
     //Getters: 
     public function getName(): string

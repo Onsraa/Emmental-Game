@@ -17,7 +17,7 @@ class Gear
     {
         if ($object->getDurability() == 0) {
             $object = null;
-            echo $object . " can't be used anymore. Good luck." . PHP_EOL;
+            echo $object . " can't be used anymore." . PHP_EOL;
         }
     }
 }

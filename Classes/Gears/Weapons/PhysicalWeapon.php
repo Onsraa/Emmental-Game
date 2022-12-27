@@ -20,8 +20,12 @@ abstract class PhysicalWeapon extends Weapon
         );
     }
 
-    public function addWeaponDamages($vanillaDamages): float
+    public function addWeaponDamages($vanillaDamages): array
     {
-        return $vanillaDamages + $this->physicalDamage;
+        return  [
+                "physicalDamage" => $vanillaDamages["physicalDamage"] + $this->physicalDamage,
+                "magicalDamage"  => $vanillaDamages["magicalDamage"] + $this->magicalDamage
+        ];   
+
     }
 }
