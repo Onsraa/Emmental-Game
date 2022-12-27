@@ -73,17 +73,17 @@ abstract class Character
         // }
     }
 
-//     public function takesArmor()
-//     {
+    public function takesArmor()
+    {      
+        echo $this->className . ' takes an armor' . PHP_EOL ;   
+    }
 
-//     }
-
-//     public function takesGear(){
-//         if (rand(1) == 0 ){
-//             $this->takesWeapon(rand(1));
-//         } else 
-//         {
-//             $this->takesArmor();
-//         }
-// }
+    public function takesGear(){
+        if (rand(0,1) == 0 ){
+            $this->takesWeapon(rand(0,1), new WandOfCallipso());
+        } else 
+        {
+            $this->takesArmor();
+        }
+}
 }

@@ -12,8 +12,5 @@ $player = new Draconist();
 
 $punchingBall = new Draconist();
 
-$player->takesWeapon(rand(0,1), new WandOfCallipso());
-
-
-$punchingBall->getHit($player, ($player->damageDeals()['physicalDamage'] + $player->damageDeals()['magicalDamage'] ) - $punchingBall->damageTanked() ) ;
+$player->takesGear();
 
