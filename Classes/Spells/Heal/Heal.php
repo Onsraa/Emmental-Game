@@ -9,7 +9,8 @@ abstract class Heal extends Spell{
         public string $spellName,
         public string $description,
         public int $cost,
-        public float $heal
+        public float $heal,
+        public string $factor, //ratio or fixed
     )
     {
         parent::__construct($spellName, $description, $cost);

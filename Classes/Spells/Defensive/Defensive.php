@@ -9,7 +9,8 @@ abstract class Defensive extends Spell{
         public string $spellName,
         public string $description,
         public int $cost,
-        public float $defense
+        public float $defense,
+        public string $factor, //ratio or fixed
     )
     {
         parent::__construct($spellName, $description, $cost);

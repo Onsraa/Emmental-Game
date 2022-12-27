@@ -102,7 +102,7 @@ abstract class Character
             if ($this->currentHealth * 0.3 <= $finalDamage && $this->defenseSpell->cost <= $this->currentMana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
                 $this->currentMana -= $this->defenseSpell->cost; //mana lost from the spell cast
                 foreach ($finalDamage as &$value) {
-                    $value *= $this->defenseSpell->defense;
+                    ($this->defenseSpell->factor == "fixed") ? $value += $this->defenseSpell->defense : $value *= $this->defenseSpell->defense;
                 }
             }
         }
@@ -161,7 +161,7 @@ abstract class Character
         // if the character has a heal spell then :
         if ($this->healSpell) {
             if ($this->currentMana >= $this->healSpell->cost) { // conditions checked : has enough mana to cast AND has less than 60% hp
-                $this->currentHealth += $this->healSpell->heal;
+                ($this->healSpell->factor == "fixed") ? $this->currentHealth += $this->healSpell->heal : $this->currentHealth *= $this->healSpell->heal;
                 $this->currentMana -= $this->healSpell->cost;
             } else {
                 $this->hit($target); // if the player doesn't have enough mana, then it hits instead of healing
