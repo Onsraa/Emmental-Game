@@ -15,6 +15,7 @@ class HeartOfDragon extends Heal
             cost: "100",
             heal: 300,
             factor: "fixed",
+            owners: ["Draconist"],
         );
     }
 }

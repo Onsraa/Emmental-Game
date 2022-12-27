@@ -15,6 +15,7 @@ class DragonSkin extends Defensive
             cost: 40,
             defense: 0.4,
             factor: "ratio",
+            owners: ["Draconist"],
         );
     }
 }

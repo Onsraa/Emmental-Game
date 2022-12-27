@@ -12,6 +12,23 @@ $player1 = new Draconist();
 $player2 = new Chaman();
 $player3 = new FlowerFairy();
 
-system('cls');
+$classes = ["Draconist", "Chaman", "FlowerFairy"];
+$nbClasses = count($classes);
 
-fight($player1, $player3);
+echo PHP_EOL;
+$name = readline("What is your name ? ") . PHP_EOL;
+echo "Welcome {$name}";
+
+echo PHP_EOL;
+echo "Choose your class : [";
+foreach($classes as $key => $value){
+    echo $value ;
+    echo ($key != $nbClasses - 1) ? ", " : "]";
+}
+echo PHP_EOL;
+$choice = readline();
+echo PHP_EOL;
+
+echo "You're now a {$choice} !";
+
+
