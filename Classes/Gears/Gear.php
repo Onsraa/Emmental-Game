@@ -20,4 +20,9 @@ class Gear{
                 echo $object . " can't be used anymore. Good luck." . PHP_EOL ; 
             }
     }
+    
+    public function __toString() 
+    {
+        return ($this->equippedWeapon) ? $this->equippedWeapon->__toString() :  $this->equippedArmor->__toString();
+    }
 }

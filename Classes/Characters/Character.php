@@ -86,4 +86,7 @@ abstract class Character
             $this->takesArmor();
         }
 }
+public function showGear(){
+    echo 'The character has :' . $this->gear . PHP_EOL;
+}
 }

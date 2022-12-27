@@ -13,4 +13,6 @@ $player = new Draconist();
 $punchingBall = new Draconist();
 
 $player->takesGear();
+echo PHP_EOL;
+$player->showGear();
 

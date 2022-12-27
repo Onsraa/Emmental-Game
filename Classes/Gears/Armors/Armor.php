@@ -15,6 +15,11 @@ namespace App\Classes\Gears\Weapons;
         {
             
         }
+
+        public function __toString() 
+        {
+            return "ARMOR" . PHP_EOL;
+        }
     }
 
 ?>
