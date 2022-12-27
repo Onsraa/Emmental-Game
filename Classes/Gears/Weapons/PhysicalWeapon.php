@@ -10,9 +10,9 @@ namespace App\Classes\Gears\Weapons;
             protected float $durability,
         )
         {
-            parent::__construct($weaponName,
+            parent::__construct("physical",
+                                $weaponName,
                                 $description,
-                                "physical",
                                 $physicalDamage,
                                 0,
                                 $durability,

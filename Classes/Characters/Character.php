@@ -4,9 +4,12 @@ namespace App\Classes\Characters;
 
 use App\Classes\Elements\Element;
 use App\Classes\Gears\Gear;
+use App\Classes\Gears\Weapons\Armor;
+use App\Classes\Gears\Weapons\MagicalWeapons\PanFlute;
 use App\Classes\Spells\Spell;
 use App\Classes\Gears\Weapons\Weapon; 
 use App\Classes\Gears\Weapons\MagicalWeapons\WandOfCallipso;
+use App\Classes\Gears\Weapons\PhysicalWeapons\DevilAxe;
 
 abstract class Character
 {
@@ -63,14 +66,16 @@ abstract class Character
         return $target->isAlive;
     }
  
-    public function takesWeapon(int $type, ?Weapon $weapon){
-        
-        $this->gear = new Gear($weapon);
-        echo $this->className . ' takes a ' . $weapon . PHP_EOL;
-        // switch ($type){
-        //     case 0:
-        //         code
-        // }
+    public function takesWeapon(int $weapon){
+        $panFlute = new PanFlute();
+        $WandOfCallipso = new WandOfCallipso();
+        $devilAxe = new DevilAxe();
+
+        $canUse = [0 =>$panFlute, 1 =>$WandOfCallipso, 2 =>$devilAxe];
+
+
+        $this->gear = new Gear($canUse[$weapon]);
+        echo $this->className . ' takes a ' . $canUse[$weapon] . PHP_EOL;
     }
 
     public function takesArmor()
@@ -80,7 +85,7 @@ abstract class Character
 
     public function takesGear(){
         if (rand(0,1) == 0 ){
-            $this->takesWeapon(rand(0,1), new WandOfCallipso());
+            $this->takesWeapon(rand(0,2));
         } else 
         {
             $this->takesArmor();
