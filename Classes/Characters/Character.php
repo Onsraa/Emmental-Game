@@ -3,11 +3,12 @@
 namespace App\Classes\Characters;
 
 use App\Classes\Elements\Element;
+use App\Classes\Gears\Armors\HelmetOfAthena;
 use App\Classes\Gears\Gear;
 use App\Classes\Spells\Offensive\Offensive;
 use App\Classes\Spells\Defensive\Defensive;
 use App\Classes\Spells\Heal\Heal;
-use App\Classes\Gears\Weapons\Armor;
+use App\Classes\Gears\Armors\Armor;
 use App\Classes\Gears\Weapons\MagicalWeapons\PanFlute;
 use App\Classes\Spells\Spell;
 use App\Classes\Gears\Weapons\Weapon; 
@@ -113,6 +114,11 @@ abstract class Character
                 }
             }
         }
+
+        //if the character has an armor equipped then : 
+        if ($this->gear->equippedArmor) {
+            $this->gear->equippedArmor->shields($finalDamage);
+            }
 
         return $finalDamage;
     }
@@ -275,14 +281,18 @@ abstract class Character
 
         $canUse = [0 =>$panFlute, 1 =>$WandOfCallipso, 2 =>$devilAxe];
 
-
         $this->gear = new Gear($canUse[$weapon]);
         echo $this->className . ' takes a ' . $canUse[$weapon] . PHP_EOL;
     }
 
-    public function takesArmor()
+    public function takesArmor(int $armor)
     {      
-        echo $this->className . ' takes an armor' . PHP_EOL ;   
+        $helmet = new HelmetOfAthena();
+
+        $canWear = [0 =>$helmet, 1 => null];
+
+        $this->gear = new Gear(null, $canWear[$armor]);
+        echo $this->className . ' wears ' . ($canWear[$armor] == null) ? "nothing" :$canWear[$armor] . PHP_EOL ;   
     }
 
     public function takesGear(){
@@ -290,10 +300,10 @@ abstract class Character
             $this->takesWeapon(rand(0,2));
         } else 
         {
-            $this->takesArmor();
+            $this->takesArmor(rand(0,1));
         }
 }
 public function showGear(){
-    echo 'The character has :' . $this->gear . PHP_EOL;
+    echo 'The character has :' . $this->gear . PHP_EOL; //on null this crash. #TO DO
 }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\Gears\Weapons;
+namespace App\Classes\Gears\Armors;
 
     abstract class Armor{
 
@@ -11,12 +11,36 @@ namespace App\Classes\Gears\Weapons;
             protected float $magicalDefense,
             protected int $durability,
         )
+        {          
+        }
+
+        //character receives less damages thanks to the armor
+        public function shields(array $damageReceived): array
         {
-            
+            return  [
+                "physicalDamage" => $damageReceived["physicalDamage"] - $this->physicalDefense,
+                "magicalDamage"  => $damageReceived["magicalDamage"] - $this->magicalDefense
+            ];   
+        }
+        
+        //Getters: 
+        public function getName(): string
+        {
+            return $this->armorName;
+        }
+    
+            public function getDescription(): string
+        {
+            return $this->description;
+        }
+    
+            public function getDurability(): int
+        {
+            return $this->durability;
         }
 
         public function __toString() 
         {
-            return "ARMOR" . PHP_EOL;
+            return "{$this->getName()} : ".lcfirst($this->getDescription()).PHP_EOL;
         }
     }
