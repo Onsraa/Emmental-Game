@@ -21,11 +21,18 @@ abstract class MagicalWeapon extends Weapon
         );
     }
 
-    public function addWeaponDamages(array $vanillaDamages): array
+    public function addWeaponDamages(array $vanillaDamages, $bearerElement): array
     {
+        $mDamages = $this->physicalDamage;
+        //If weapon and character elements are identical, more damages dealt.
+        if ($this->weaponElement->compatibility($bearerElement) == "efficient")
+        {
+            $mDamages *= 1.5 ;
+        }
+        
         return  [
                 "physicalDamage" => $vanillaDamages["physicalDamage"] + $this->physicalDamage,
-                "magicalDamage"  => $vanillaDamages["magicalDamage"] + $this->magicalDamage
+                "magicalDamage"  => $vanillaDamages["magicalDamage"] +$mDamages
         ];   
 
     }

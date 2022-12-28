@@ -51,7 +51,7 @@ abstract class Character
 
        
         $baseDamage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
-        $damage = $this->gear->equippedWeapon->addWeaponDamages($baseDamage);
+        $damage = $this->gear->equippedWeapon->addWeaponDamages($baseDamage, $this->myElement);
 
         // if the character has an offensive spell then :
         if ($this->offensiveSpell) {

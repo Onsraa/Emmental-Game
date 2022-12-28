@@ -1,7 +1,11 @@
 <?php
 
 namespace App\Classes\Gears\Weapons;
+use App\Classes\Elements\Element;
+
     abstract class Weapon{
+
+        protected Element $weaponElement; 
 
         public function __construct(
             protected string $type, //NOT NEEDED ?is it a physical weapon or a magical weapon ?
@@ -12,6 +16,20 @@ namespace App\Classes\Gears\Weapons;
             protected float $durability,
         )
         {
+            //randomly assign an element to the weapon
+            switch (rand(0,2))
+            {
+                case 0:
+                    $element = "fire";
+                    break;
+                case 1:
+                    $element = "plant";
+                    break;
+                case 2: 
+                    $element = "water";
+                    break;
+            }
+            $this->weaponElement = new Element($element);
         }
 
     //Reduce durability then makes unusable the weapon
@@ -28,7 +46,7 @@ namespace App\Classes\Gears\Weapons;
         echo " 's weapon is usable for " . $this->durability . " turns before it breaks." . PHP_EOL;
     }
 
-    abstract public function addWeaponDamages(array $vanillaDamages): array ;
+    abstract public function addWeaponDamages(array $vanillaDamages, $bearerElement): array ;
 
     //Getters: 
     public function getName(): string
@@ -44,6 +62,11 @@ namespace App\Classes\Gears\Weapons;
     public function getDurability(): int
     {
         return $this->durability;
+    }
+
+    public function getElement(): Element
+    {
+        return $this->weaponElement;
     }
 
     public function __toString() 

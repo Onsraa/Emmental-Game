@@ -18,7 +18,7 @@ class Element
         $otherElement = $targettedElement->element;
 
         foreach ($elementCompatibility as $key => $value) {
-            if ($key == $currentElement && $value == $otherElement) {
+            if ($key == $currentElement && $value == $otherElement || $currentElement == $targettedElement) {
                 return "efficient";
             } else if (
                 $key == $otherElement && $value == $currentElement
