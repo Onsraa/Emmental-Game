@@ -291,8 +291,10 @@ abstract class Character
 
         $canWear = [0 =>$helmet, 1 => null];
 
-        $this->gear = new Gear(null, $canWear[$armor]);
-        echo $this->className . ' wears ' . ($canWear[$armor] == null) ? "nothing" :$canWear[$armor] . PHP_EOL ;   
+        
+        $this->gear = $armor == 1 ? null : new Gear(null, $canWear[$armor]);
+        echo $this->className . ' wears ' ;
+        echo ($canWear[$armor] == null) ? "nothing to protect themself." . PHP_EOL : $canWear[$armor] . PHP_EOL ;   
     }
 
     public function takesGear(){
