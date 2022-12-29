@@ -11,7 +11,7 @@ use App\Classes\Spells\Heal\Heal;
 use App\Classes\Gears\Armors\Armor;
 use App\Classes\Gears\Weapons\MagicalWeapons\PanFlute;
 use App\Classes\Spells\Spell;
-use App\Classes\Gears\Weapons\Weapon; 
+use App\Classes\Gears\Weapons\Weapon;
 use App\Classes\Gears\Weapons\MagicalWeapons\WandOfCallipso;
 use App\Classes\Gears\Weapons\PhysicalWeapons\DevilAxe;
 
@@ -49,7 +49,7 @@ abstract class Character
     protected function damageDeals(bool $simulate = false): array
     { // function to calculate the damage before the damageTanked()
 
-       
+
         $baseDamage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
         $damage = $this->gear->equippedWeapon->addWeaponDamages($baseDamage, $this->myElement);
 
@@ -118,7 +118,7 @@ abstract class Character
         //if the character has an armor equipped then : 
         if ($this->gear->equippedArmor) {
             $this->gear->equippedArmor->shields($finalDamage);
-            }
+        }
 
         return $finalDamage;
     }
@@ -248,10 +248,10 @@ abstract class Character
         $restNeededToLevelUpIndication = 30 - $currentXpIndication;
 
         echo "[";
-        for ($i = 0; $i < $currentXpIndication; $i++){
+        for ($i = 0; $i < $currentXpIndication; $i++) {
             echo "#";
         }
-        for ($j = 0; $j < $restNeededToLevelUpIndication; $j++){
+        for ($j = 0; $j < $restNeededToLevelUpIndication; $j++) {
             echo " ";
         }
         echo "]" . PHP_EOL;
@@ -263,7 +263,7 @@ abstract class Character
         echo "  Magical Strength : {$this->magicalStrength}" . PHP_EOL;
         echo "  Physical Defense : {$this->physicalDefense}" . PHP_EOL;
         echo "  Magical Defense : {$this->magicalDefense}" . PHP_EOL;
-        
+
         echo PHP_EOL . "---------------Spells---------------" . PHP_EOL;
         echo PHP_EOL . "  Offensive : ";
         echo ($this->offensiveSpell) ? "{$this->offensiveSpell->spellName}" : "empty";
@@ -274,38 +274,40 @@ abstract class Character
         echo PHP_EOL . "+-----------------------------------------------+" . PHP_EOL;
     }
 
-    public function takesWeapon(int $weapon){
+    public function takesWeapon(int $weapon)
+    {
         $panFlute = new PanFlute();
         $WandOfCallipso = new WandOfCallipso();
         $devilAxe = new DevilAxe();
 
-        $canUse = [0 =>$panFlute, 1 =>$WandOfCallipso, 2 =>$devilAxe];
+        $canUse = [0 => $panFlute, 1 => $WandOfCallipso, 2 => $devilAxe];
 
         $this->gear = new Gear($canUse[$weapon]);
         echo $this->className . ' takes a ' . $canUse[$weapon] . PHP_EOL;
     }
 
     public function takesArmor(int $armor)
-    {      
+    {
         $helmet = new HelmetOfAthena();
 
-        $canWear = [0 =>$helmet, 1 => null];
+        $canWear = [0 => $helmet, 1 => null];
 
-        
+
         $this->gear = $armor == 1 ? null : new Gear(null, $canWear[$armor]);
-        echo $this->className . ' wears ' ;
-        echo ($canWear[$armor] == null) ? "nothing to protect themself." . PHP_EOL : $canWear[$armor] . PHP_EOL ;   
+        echo $this->className . ' wears ';
+        echo ($canWear[$armor] == null) ? "nothing to protect themself." . PHP_EOL : $canWear[$armor] . PHP_EOL;
     }
 
-    public function takesGear(){
-        if (rand(0,1) == 0 ){
-            $this->takesWeapon(rand(0,2));
-        } else 
-        {
-            $this->takesArmor(rand(0,1));
+    public function takesGear()
+    {
+        if (rand(0, 1) == 0) {
+            $this->takesWeapon(rand(0, 2));
+        } else {
+            $this->takesArmor(rand(0, 1));
         }
-}
-public function showGear(){
-    echo 'The character has :' . $this->gear . PHP_EOL; //on null this crash. #TO DO
-}
+    }
+    public function showGear()
+    {
+        echo 'The character has :' . $this->gear . PHP_EOL; //on null this crash. #TO DO
+    }
 }

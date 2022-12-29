@@ -5,9 +5,7 @@ require_once("./Functions/rng.php");
 require_once("./Functions/fight.php");
 require_once("./Functions/classes.php");
 
-use App\Classes\Specializations\Chaman;
-use App\Classes\Specializations\Draconist;
-use App\Classes\Specializations\FlowerFairy;
+use App\Classes\Characters\Character;
 
 $player_characters = []; // each class created is added here
 
@@ -22,9 +20,8 @@ echo PHP_EOL . "Nice to meet you {$nickname}" . PHP_EOL;
 
 if (empty($player_characters)) {
     echo "You currently don't have any character. Would you like one ?" . PHP_EOL;
-    echo "(Y)es or (N)o" . PHP_EOL;
     do {
-        $answer = readline("Answer : ");
+        $answer = readline("(y)es or (n)o : ");
     } while ($answer != 'Y' && $answer != 'y' && $answer != 'N' && $answer != 'n');
     switch (strtoupper($answer)) {
         case 'Y':
@@ -39,6 +36,54 @@ if (empty($player_characters)) {
     }
     echo PHP_EOL;
     array_push($player_characters, addClass($nickname));
+    $current_character = $player_characters[0];
+
+    echo PHP_EOL;
+    echo "Ok so now, let's start the adventure. What do you want to do ?";
+    echo PHP_EOL;
+
+    while (1) {
+        echo "1. Fight" . PHP_EOL;
+        echo "2. Show stats" . PHP_EOL;
+        echo "3. Choose spells" . PHP_EOL;
+        echo "4. Choose another character" . PHP_EOL;
+        echo "5. Leave" . PHP_EOL . PHP_EOL;
+
+        $answer = readline("Selection : ");
+
+        while ($answer < 1 && $answer > 4) {
+            $answer = readline("Please select a proper answer : ");
+        };
+
+        switch ($answer) {
+            case 1:
+                break;
+            case 2:
+                $current_character->showSpec();
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                echo PHP_EOL . "Are you sure ?" . PHP_EOL;
+                do {
+                    $answer = readline("(y)es or (n)o : ");
+                } while ($answer != 'Y' && $answer != 'y' && $answer != 'N' && $answer != 'n');
+
+                switch (strtoupper($answer)) {
+                    case 'Y':
+                        echo PHP_EOL . "Ok, bye loser.." . PHP_EOL;
+                        exit;
+                    case 'N':
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 // TEDDY STOPS HERE
