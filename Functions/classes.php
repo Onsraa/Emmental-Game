@@ -18,7 +18,7 @@ function addClass($nickname)
         $character_nb = $key + 1;
         echo "{$character_nb} : {$value}" . PHP_EOL;
     }
-    echo "0 : random" . PHP_EOL;
+    echo "0 : random" . PHP_EOL . PHP_EOL;
 
     do {
         $select_class = readline("Selection: ");
@@ -37,7 +37,7 @@ function addClass($nickname)
 }
 function selectClass(string $nickname, string $class)
 {
-    
+
     switch ($class) {
         case "Draconist":
             return new Draconist($nickname);
