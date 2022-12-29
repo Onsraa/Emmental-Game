@@ -13,7 +13,6 @@ class DragonBreath extends Offensive
             description: "Very powerful breath from an ancient fire Dragon",
             cost: 100,
             damage: ["physicalDamage" => 0, "magicalDamage" => 500],
-            owners: ["Draconist"],
         );
     }
 }
