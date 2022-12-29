@@ -26,12 +26,11 @@ if (empty($player_characters)) {
     do {
         $answer = readline("Answer : ");
     } while ($answer != 'Y' && $answer != 'y' && $answer != 'N' && $answer != 'n');
-
-    switch ($answer) {
-        case 'Y' || 'y':
+    switch (strtoupper($answer)) {
+        case 'Y':
             echo PHP_EOL . "Cool ! Let's begin." . PHP_EOL;
             break;
-        case 'N' || 'n':
+        case 'N':
             $screamedNickname = strtoupper($nickname);
             echo PHP_EOL . "Well.. then bye {$screamedNickname}." . PHP_EOL;
             exit;
