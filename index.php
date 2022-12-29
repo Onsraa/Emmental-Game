@@ -5,15 +5,13 @@ require_once("./Functions/rng.php");
 require_once("./Functions/fight.php");
 require_once("./Functions/classes.php");
 
-function cls()                                                                                                             
+function cls() //clear console function                                                                                                           
 {
     print("\033[2J\033[;H");
 }
 
-use App\Classes\Characters\Character;
-
 $player_characters = []; // each class created is added here
-
+cls();
 echo "Welcome to our game" . PHP_EOL;
 
 echo PHP_EOL . "What is your name ?" . PHP_EOL;
@@ -30,6 +28,7 @@ if (empty($player_characters)) {
     do {
         $answer = readline("(y)es or (n)o : ");
     } while ($answer != 'Y' && $answer != 'y' && $answer != 'N' && $answer != 'n');
+    cls();
     switch (strtoupper($answer)) {
         case 'Y':
             echo PHP_EOL . "Cool ! Let's begin." . PHP_EOL;
@@ -58,6 +57,8 @@ if (empty($player_characters)) {
 
         $answer = readline("Selection : ");
 
+        cls();
+
         while ($answer < 1 && $answer > 4) {
             $answer = readline("Please select a proper answer : ");
         };
@@ -76,7 +77,7 @@ if (empty($player_characters)) {
                 do {
                     $answer = readline("(y)es or (n)o : ");
                 } while ($answer != 'Y' && $answer != 'y' && $answer != 'N' && $answer != 'n');
-
+                cls();
                 switch (strtoupper($answer)) {
                     case 'Y':
                         echo PHP_EOL . "Ok, bye loser.." . PHP_EOL;
