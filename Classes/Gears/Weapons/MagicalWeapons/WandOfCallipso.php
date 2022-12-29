@@ -6,7 +6,7 @@ use App\Classes\Gears\Weapons\MagicalWeapon;
 
 class WandOfCallipso extends MagicalWeapon
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct(
             "Callipso's wand",
