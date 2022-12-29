@@ -235,9 +235,23 @@ abstract class Character
     public function showSpec()
     {
 
-        echo PHP_EOL . "|******************************************************|" . PHP_EOL;
+        echo PHP_EOL . PHP_EOL;
+        for ($i = 0; $i < 60; $i++) {
+            echo "X";
+        }
+        echo PHP_EOL;
+        $sentence = "Character informations";
+        $length = strlen($sentence);
 
-        echo PHP_EOL . "---------------Character informations---------------" . PHP_EOL;
+        for ($i = 0; $i < (60 - $length) / 2; $i++) {
+            echo "-";
+        }
+        echo $sentence;
+        for ($i = 0; $i < (60 - $length) / 2; $i++) {
+            echo "-";
+        }
+        echo PHP_EOL;
+
         echo "  Username : {$this->username}";
         echo "  Class : {$this->className}" . PHP_EOL;
         echo "  Element : {$this->element}" . PHP_EOL;
@@ -256,7 +270,17 @@ abstract class Character
         }
         echo "]" . PHP_EOL;
 
-        echo PHP_EOL . "---------------Stats---------------" . PHP_EOL;
+        $sentence = "Stats";
+        $length = strlen($sentence);
+
+        for ($i = 0; $i < (60 - $length) / 2; $i++) {
+            echo "-";
+        }
+        echo $sentence;
+        for ($i = 0; $i < (60 - $length) / 2; $i++) {
+            echo "-";
+        }
+        echo PHP_EOL;
         echo "  Health : {$this->health}" . PHP_EOL;
         echo "  Mana : {$this->mana}" . PHP_EOL;
         echo "  Physical Strength : {$this->physicalStrength}" . PHP_EOL;
@@ -264,14 +288,31 @@ abstract class Character
         echo "  Physical Defense : {$this->physicalDefense}" . PHP_EOL;
         echo "  Magical Defense : {$this->magicalDefense}" . PHP_EOL;
 
-        echo PHP_EOL . "---------------Spells---------------" . PHP_EOL;
+        $sentence = "Spells";
+        $length = strlen($sentence);
+
+        for ($i = 0; $i < (60 - $length) / 2; $i++) {
+            echo "-";
+        }
+        echo $sentence;
+        for ($i = 0; $i < (60 - $length) / 2; $i++) {
+            echo "-";
+        }
         echo PHP_EOL . "  Offensive : ";
         echo ($this->offensiveSpell) ? "{$this->offensiveSpell->spellName}" : "empty";
         echo PHP_EOL . "  Defensive : ";
         echo ($this->defensiveSpell) ? "{$this->defensiveSpell->spellName}" : "empty";
         echo PHP_EOL . "  Heal : ";
         echo ($this->healSpell) ? "{$this->healSpell->spellName}" : "empty";
-        echo PHP_EOL . "+-----------------------------------------------+" . PHP_EOL;
+        echo PHP_EOL;
+        for ($i = 0; $i < 60; $i++) {
+            echo "-";
+        }
+        echo PHP_EOL;
+        for ($i = 0; $i < 60; $i++) {
+            echo "X";
+        }
+        echo PHP_EOL . PHP_EOL;
     }
 
     public function takesWeapon(int $weapon)
