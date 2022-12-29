@@ -5,6 +5,11 @@ require_once("./Functions/rng.php");
 require_once("./Functions/fight.php");
 require_once("./Functions/classes.php");
 
+function cls()                                                                                                             
+{
+    print("\033[2J\033[;H");
+}
+
 use App\Classes\Characters\Character;
 
 $player_characters = []; // each class created is added here
@@ -14,6 +19,8 @@ echo "Welcome to our game" . PHP_EOL;
 echo PHP_EOL . "What is your name ?" . PHP_EOL;
 
 $nickname = readline("Your name : ") . PHP_EOL;
+
+cls();
 
 echo PHP_EOL . "Nice to meet you {$nickname}" . PHP_EOL;
 
@@ -37,10 +44,10 @@ if (empty($player_characters)) {
     echo PHP_EOL;
     array_push($player_characters, addClass($nickname));
     $current_character = $player_characters[0];
-    
-    echo PHP_EOL;
-    echo "Ok so now, let's start the adventure. What do you want to do ?";
-    echo PHP_EOL;
+
+    cls();
+
+    echo PHP_EOL . "Ok so now, let's start the adventure. What do you want to do ?" . PHP_EOL . PHP_EOL;
 
     while (1) {
         echo "1. Fight" . PHP_EOL;
