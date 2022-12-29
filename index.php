@@ -37,7 +37,7 @@ if (empty($player_characters)) {
     echo PHP_EOL;
     array_push($player_characters, addClass($nickname));
     $current_character = $player_characters[0];
-
+    
     echo PHP_EOL;
     echo "Ok so now, let's start the adventure. What do you want to do ?";
     echo PHP_EOL;
