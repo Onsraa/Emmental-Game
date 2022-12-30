@@ -16,7 +16,7 @@ namespace App\Classes\Gears\Armors;
 
         //character receives less damages thanks to the armor
         public function shields(array $damageReceived): array
-        {
+        {   
             return  [
                 "physicalDamage" => $damageReceived["physicalDamage"] - $this->physicalDefense,
                 "magicalDamage"  => $damageReceived["magicalDamage"] - $this->magicalDefense

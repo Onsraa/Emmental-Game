@@ -8,7 +8,7 @@ use App\Classes\Elements\Element;
         protected Element $weaponElement; 
 
         public function __construct(
-            protected string $type, //NOT NEEDED ?is it a physical weapon or a magical weapon ?
+            protected string $type, //is it a physical weapon or a magical weapon ?
             protected string $weaponName,
             protected string $description,
             protected float $physicalDamage,

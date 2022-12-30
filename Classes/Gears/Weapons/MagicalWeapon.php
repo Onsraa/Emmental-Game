@@ -25,7 +25,7 @@ abstract class MagicalWeapon extends Weapon
     {
         $mDamages = $this->physicalDamage;
         //If weapon and character elements are identical, more damages dealt.
-        if ($this->weaponElement->compatibility($bearerElement) == "efficient")
+        if ($this->weaponElement->compatibility($bearerElement) == null)
         {
             $mDamages *= 1.5 ;
         }

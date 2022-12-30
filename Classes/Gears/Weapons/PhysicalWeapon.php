@@ -25,7 +25,7 @@ abstract class PhysicalWeapon extends Weapon
     {   
         $pDamages = $this->physicalDamage;
         //If weapon and character elements are identical, more damages dealt.
-        if ($this->weaponElement->compatibility($bearerElement) == "efficient")
+        if ($this->weaponElement->compatibility($bearerElement) == null)
         {
             $pDamages *= 1.5 ;
         }

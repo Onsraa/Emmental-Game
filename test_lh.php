@@ -6,15 +6,12 @@ require_once("./Functions/fight.php");
 
 use App\Classes\Characters\Character;
 use App\Classes\Gears\Gear;
-use App\Classes\Specializations\Draconist;
-use App\Classes\Specializations\FlowerFairy;
-use App\Classes\Gears\Weapons\MagicalWeapons\WandOfCallipso;
+use App\Classes\Specializations\Ninja;
+use App\Classes\Specializations\CHaman;
 
-$player = new Draconist("Henry");
+$player = new Ninja("Henry");
+$punchingBall = new Chaman("Sam");
 
-$punchingBall = new FlowerFairy("Sam");
-
-//error if one doesn't have smth in gear, fix incoming.
 $player->takesGear();
 echo PHP_EOL;
 $punchingBall->takesGear();

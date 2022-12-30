@@ -23,6 +23,6 @@ class Gear{
     
     public function __toString() 
     {
-        return ($this->equippedWeapon != null) ? $this->equippedWeapon->__toString() :  $this->equippedArmor->__toString();
+        return ($this->equippedWeapon) ? $this->equippedWeapon->__toString() :  $this->equippedArmor->__toString();
     }
 }
