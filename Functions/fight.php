@@ -36,9 +36,9 @@ function fight(Character $player1, Character $player2): void
 
     echo PHP_EOL;
     if($player1->isAlive){
-        echo "The {$player1} won ! Congratulations.";
+        echo "{$player1} won ! Congratulations.";
     }else{
-        echo "The {$player2} won ! Congratulations.";
+        echo "{$player2} won ! Congratulations.";
     }
     echo PHP_EOL;
 
