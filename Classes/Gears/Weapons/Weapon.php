@@ -33,18 +33,20 @@ use App\Classes\Elements\Element;
         }
 
     //Reduce durability then makes unusable the weapon
-    public function breaks(): void
+    public function breaks(): int
     {
         if ($this->durability - 1 == 0)
         {
             $this->durability = 0;
+            return 1;
         } 
         else 
         {
             $this->durability -- ;
+            return 0;
         }
-        echo " 's weapon is usable for " . $this->durability . " turns before it breaks." . PHP_EOL;
     }
+
 
     abstract public function addWeaponDamages(array $vanillaDamages, $bearerElement): array ;
 
@@ -71,6 +73,6 @@ use App\Classes\Elements\Element;
 
     public function __toString() 
     {
-        return "{$this->getName()} : ".lcfirst($this->getDescription()).PHP_EOL;
+        return "{$this->getName()} : ".lcfirst($this->getDescription());
     }
     }

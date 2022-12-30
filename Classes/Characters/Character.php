@@ -52,8 +52,8 @@ abstract class Character
 
         $damage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
         
-        if ($this->gear->equippedWeapon) 
-        {   $this->showGear();
+        if ($this->gear && $this->gear->equippedWeapon) 
+        {   
             $damage = $this->gear->equippedWeapon->addWeaponDamages($damage, $this->myElement);
         }
         
@@ -120,7 +120,7 @@ abstract class Character
         }
 
         //if the character has an armor equipped then : 
-        if ($this->gear->equippedArmor) {
+        if ($this->gear && $this->gear->equippedArmor) {
             echo "The enemy's attack dealt less damages thanks to the ". $this->gear->equippedArmor->getName() ." of ". $this->username . PHP_EOL;
             $this->gear->equippedArmor->shields($finalDamage);
         }
@@ -150,10 +150,12 @@ abstract class Character
         }
         switch ($this->myElement->compatibility($target->myElement)) {
             case "efficient":
-                echo PHP_EOL . "Damage is effective ! It gains 50% more damage." . PHP_EOL;
+                echo PHP_EOL . ucfirst($this->element) ." is strong against {$target->element}." . PHP_EOL ;
+                echo "The attack deals 50% more damage." . PHP_EOL;
                 break;
             case "ineffective":
-                echo PHP_EOL . "Misery ! The damage losts 30% of its value because of the element..." . PHP_EOL;
+                echo PHP_EOL . ucfirst($this->element) ." is weak against {$target->element}." . PHP_EOL ;
+                echo "Misery ! The attack deals 30% less damage." . PHP_EOL;
                 break;
             default:
                 break;
@@ -163,7 +165,7 @@ abstract class Character
         echo "{$this} hits {$target} for {$totalDamage} !";
         echo PHP_EOL;
         echo PHP_EOL;
-        echo "Remaining hp : [{$target->currentHealth}/{$target->health}]";
+        echo "{$target}'s remaining HP : [{$target->currentHealth}/{$target->health}]";
         echo PHP_EOL;
 
         $this->regeneratingMana();
@@ -171,6 +173,22 @@ abstract class Character
         if ($target->currentHealth <= 0) {
             $target->isAlive = false;
             $this->gainExp($target);
+        }
+
+        //gear object losing life then eventually get thrown away.
+        if ($this->gear)
+        {
+            $equippedObject = ($this->gear->equippedWeapon) ? $this->gear->equippedWeapon : $this->gear->equippedArmor ; 
+            
+            if ($equippedObject->breaks() == 1)
+            {
+                $this->gear->goesToTrash($equippedObject);
+            } else {
+                echo "{$this}'s weapon is usable for " . $equippedObject->getDurability(). " turns before it breaks." . PHP_EOL;
+            }
+            
+            $this->showGear();
+
         }
     }
 
@@ -226,10 +244,12 @@ abstract class Character
     {
         $this->currentMana += 20 * $this->level["level"];
     }
+
     public function __toString()
     {
         return "{$this->username}, the {$this->className}";
     }
+
     public function restore()
     {
         $this->currentHealth = $this->health; //reset health after fight
@@ -358,13 +378,13 @@ abstract class Character
         }
     }
     public function showGear()
-    {   if ($this->gear)
+    {   if ($this->gear && ($this->gear->equippedArmor || $this->gear->equippedWeapon))
         {
             echo $this->username . ' has ' . $this->gear . '.'. PHP_EOL ;
         } 
         else 
         {
-            echo $this->username . "\'s gear is empty." . PHP_EOL;
+            echo $this->username . "'s gear is empty." . PHP_EOL;
         }
         
     }

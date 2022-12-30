@@ -12,7 +12,7 @@ class WandOfCallipso extends MagicalWeapon
             "Callipso's wand",
             "An old wand that belonged to Callipso, a master of alchemy.",
             10,
-            20,
+            2,
         );
     }
 }

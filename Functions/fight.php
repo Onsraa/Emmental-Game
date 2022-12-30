@@ -30,7 +30,7 @@ function fight(Character $player1, Character $player2): void
                     break;
             }
         }
-
+        
         $round++;
     }
 

@@ -12,12 +12,12 @@ class Gear{
     {       
     }
 
-    public function goesToTrash(Weapon | Armor $object) : void
+    public function goesToTrash(Weapon | Armor &$object) : void
     {
         if ($object->getDurability() == 0 ) 
             {
                 $object = null;
-                echo $object . " can't be used anymore." . PHP_EOL ; 
+                echo "It was the last hit with this weapon, it can't be used anymore." . PHP_EOL ; 
             }
     }
     

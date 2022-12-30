@@ -14,6 +14,21 @@ namespace App\Classes\Gears\Armors;
         {          
         }
 
+         //Reduce durability then makes unusable the weapon
+        public function breaks(): int
+        {
+            if ($this->durability - 1 == 0)
+            {
+                $this->durability = 0;
+                return 1;
+            } 
+            else 
+            {
+                $this->durability -- ;
+                return 0;
+            }
+        }
+
         //character receives less damages thanks to the armor
         public function shields(array $damageReceived): array
         {   
@@ -41,6 +56,6 @@ namespace App\Classes\Gears\Armors;
 
         public function __toString() 
         {
-            return "{$this->getName()} : ".lcfirst($this->getDescription()).PHP_EOL;
+            return "{$this->getName()} : ".lcfirst($this->getDescription());
         }
     }
