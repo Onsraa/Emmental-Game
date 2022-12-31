@@ -351,7 +351,7 @@ abstract class Character
         $canUse = [0 => $panFlute, 1 => $WandOfCallipso, 2 => $devilAxe];
 
         $this->gear = new Gear($canUse[$weapon]);
-        echo $this->className . ' takes a ' . $canUse[$weapon] . PHP_EOL;
+        echo PHP_EOL. $this->className . ' takes a ' . $canUse[$weapon] . PHP_EOL;
     }
 
     public function takesArmor(int $armor)
@@ -363,7 +363,7 @@ abstract class Character
 
 
         $this->gear = new Gear(null, $canWear[$armor]);
-        echo $this->className . ' wears ';
+        echo PHP_EOL . $this->className . ' wears ';
         echo ($canWear[$armor] == null) ? "nothing to protect themself." . PHP_EOL : $canWear[$armor] . PHP_EOL; //should never happen now
     }
 
@@ -376,7 +376,7 @@ abstract class Character
         } else if ($luckyLuck == 1) {
             $this->takesArmor(rand(0, 1));
         } else {
-            echo "Oh no, " . $this->username . " is unlucky, they didn't get anything to help them in this fight. :c" . PHP_EOL  ;
+            echo PHP_EOL . "Oh no, " . $this->username . " is unlucky, they didn't get anything to help them in this fight. :c" . PHP_EOL  ;
         }
     }
     public function showGear()

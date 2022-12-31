@@ -16,9 +16,6 @@ $tul = new FlowerFairy("Elsa");
 $player = new Ninja("Henry");
 $punchingBall = new Chaman("Sam");
 
-$player->takesGear();
-echo PHP_EOL;
-$punchingBall->takesGear();
 fight($player, $punchingBall);
 
 

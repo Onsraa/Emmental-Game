@@ -3,7 +3,10 @@
 use App\Classes\Characters\Character;
 
 function fight(Character $player1, Character $player2): void
-{
+{   
+    //At the beginning of each fight, might have a weapon or an armor.
+    $player1->takesGear();
+    $player2->takesGear();
 
     $round = 0;
 
