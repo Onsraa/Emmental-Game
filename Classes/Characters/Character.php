@@ -53,7 +53,7 @@ abstract class Character
         $damage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
         
         if ($this->gear && $this->gear->equippedWeapon) 
-        {   
+        {
             $damage = $this->gear->equippedWeapon->addWeaponDamages($damage, $this->myElement);
         }
         
@@ -77,6 +77,7 @@ abstract class Character
             }
             array_push($damage, 0); // indication do check if the damage is a crit or not, it will push a value to the array : $damage = [0 : 0, "physicalDamage" : 123, "magicalDamage" : 123]
         }
+        
         return $damage;
     }
 
@@ -119,12 +120,6 @@ abstract class Character
             }
         }
 
-        //if the character has an armor equipped then : 
-        if ($this->gear && $this->gear->equippedArmor) {
-            echo "The enemy's attack dealt less damages thanks to the ". $this->gear->equippedArmor->getName() ." of ". $this->username . PHP_EOL;
-            $this->gear->equippedArmor->shields($finalDamage);
-        }
-
         return $finalDamage;
     }
 
@@ -141,12 +136,19 @@ abstract class Character
     public function hit(Character $target): void
     {
         $damage = $target->damageTanked($this);
+
+        //if the character has an armor equipped then : 
+            if ($this->gear && $this->gear->equippedArmor) {
+                $this->gear->equippedArmor->shields($damage);
+                echo "The enemy's attack dealt less damages thanks to the ". $this->gear->equippedArmor->getName() ." of ". $this->username . PHP_EOL;
+            }
+
         $totalDamage = $damage["physicalDamage"] + $damage["magicalDamage"];
         // final damage done to the opponent
         $target->currentHealth -= $totalDamage;
 
         if (isset($damage[0])) {
-            echo PHP_EOL . "Critical hit !" . PHP_EOL;
+            echo PHP_EOL . "It 's a critical hit !" . PHP_EOL;
         }
         switch ($this->myElement->compatibility($target->myElement)) {
             case "efficient":
@@ -162,7 +164,22 @@ abstract class Character
         }
 
         echo PHP_EOL;
-        echo "{$this} hits {$target} for {$totalDamage} !";
+        echo "{$this} hits {$target} for {$totalDamage} !" . PHP_EOL ;
+
+        //gear object losing life then eventually get thrown away.
+        if ($this->gear)
+        {
+            $equippedObject = ($this->gear->equippedWeapon) ? $this->gear->equippedWeapon : $this->gear->equippedArmor ; 
+            
+            if ($equippedObject->breaks() == 1)
+            {
+                $this->gear->goesToTrash($equippedObject);
+            } else {
+                echo "{$this}'s weapon ({$equippedObject}) is usable for " . $equippedObject->getDurability(). " turns before it breaks." . PHP_EOL;
+            }
+
+        }
+
         echo PHP_EOL;
         echo PHP_EOL;
         echo "{$target}'s remaining HP : [{$target->currentHealth}/{$target->health}]";
@@ -175,21 +192,6 @@ abstract class Character
             $this->gainExp($target);
         }
 
-        //gear object losing life then eventually get thrown away.
-        if ($this->gear)
-        {
-            $equippedObject = ($this->gear->equippedWeapon) ? $this->gear->equippedWeapon : $this->gear->equippedArmor ; 
-            
-            if ($equippedObject->breaks() == 1)
-            {
-                $this->gear->goesToTrash($equippedObject);
-            } else {
-                echo "{$this}'s weapon is usable for " . $equippedObject->getDurability(). " turns before it breaks." . PHP_EOL;
-            }
-            
-            $this->showGear();
-
-        }
     }
 
     public function heal(Character $target): void
@@ -367,10 +369,10 @@ abstract class Character
 
     public function takesGear()
     {
-        $luckyLuck = rand(0, 2);
+        $luckyLuck = rand(0,1);
 
         if ($luckyLuck == 0) {
-            $this->takesWeapon(rand(0, 2));
+            $this->takesWeapon(rand(0,2));
         } else if ($luckyLuck == 1) {
             $this->takesArmor(rand(0, 1));
         } else {

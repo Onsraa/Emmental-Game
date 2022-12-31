@@ -13,7 +13,7 @@ class HelmetOfAthena extends Armor
                             "The helmet which led to victory.",
                             80,
                             35,
-                            20
+                            10
                             );
     }
 }

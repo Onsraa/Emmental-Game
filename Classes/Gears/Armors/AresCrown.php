@@ -13,7 +13,7 @@ class AresCrown extends Armor
                             "The crown of the God of War.",
                             100,
                             25,
-                            19
+                            3
                             );
     }
 }
