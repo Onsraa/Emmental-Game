@@ -14,7 +14,7 @@ $player_characters = []; // each class created is added here
 cls();
 echo "Welcome to our game" . PHP_EOL;
 
-echo PHP_EOL . "What is your name ?" . PHP_EOL;
+echo PHP_EOL . "What is your name ?" . PHP_EOL . PHP_EOL;
 
 $nickname = readline("Your name : ") . PHP_EOL;
 
@@ -24,7 +24,7 @@ echo PHP_EOL . "Nice to meet you {$nickname}" . PHP_EOL;
 
 
 if (empty($player_characters)) {
-    echo "You currently don't have any character. Would you like one ?" . PHP_EOL;
+    echo "You currently don't have any character. Would you like one ?" . PHP_EOL . PHP_EOL;
     do {
         $answer = readline("(y)es or (n)o : ");
     } while ($answer != 'Y' && $answer != 'y' && $answer != 'N' && $answer != 'n');
@@ -52,16 +52,12 @@ if (empty($player_characters)) {
         echo "1. Fight" . PHP_EOL;
         echo "2. Show stats" . PHP_EOL;
         echo "3. Choose spells" . PHP_EOL;
-        echo "4. Choose another character" . PHP_EOL;
+        echo "4. Check characters" . PHP_EOL;
         echo "5. Leave" . PHP_EOL . PHP_EOL;
 
         $answer = readline("Selection : ");
 
         cls();
-
-        while ($answer < 1 && $answer > 4) {
-            $answer = readline("Please select a proper answer : ");
-        };
 
         switch ($answer) {
             case 1:
@@ -71,6 +67,7 @@ if (empty($player_characters)) {
             case 3:
                 break;
             case 4:
+                chooseAnotherClass($player_characters, $nickname, $current_character);
                 break;
             case 5:
                 echo PHP_EOL . "Are you sure ?" . PHP_EOL;

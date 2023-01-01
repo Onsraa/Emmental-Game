@@ -3,6 +3,7 @@
 namespace App\Classes\Spells\Offensive;
 
 use App\Classes\Spells\Offensive\Offensive;
+
 class DragonBreath extends Offensive
 {
 
@@ -12,6 +13,7 @@ class DragonBreath extends Offensive
             spellName: "Dragon Breath",
             description: "Very powerful breath from an ancient fire Dragon",
             cost: 100,
+            owners: ["Draconist"],
             damage: ["physicalDamage" => 0, "magicalDamage" => 500],
         );
     }

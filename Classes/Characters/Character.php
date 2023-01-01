@@ -235,7 +235,7 @@ abstract class Character
     public function showSpec()
     {
 
-        echo PHP_EOL . PHP_EOL;
+        echo PHP_EOL;
         for ($i = 0; $i < 60; $i++) {
             echo "X";
         }
@@ -350,5 +350,15 @@ abstract class Character
     public function showGear()
     {
         echo 'The character has :' . $this->gear . PHP_EOL; //on null this crash. #TO DO
+    }
+
+    public function getClassName(): string
+    {
+        return $this->className;
+    }
+
+    public function getLevel(): int
+    {
+        return $this->level['level'];
     }
 }
