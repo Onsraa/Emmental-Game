@@ -377,13 +377,13 @@ abstract class Character
         $dragonBreath = new DragonBreath();
         $lightningChain = new LightningChain();
         switch ($selection){
-            case"EatThis":
+            case"Eat This":
                 $this->offensiveSpell = $eatThis;
                 break;
-            case "DragonBreath":
+            case "Dragon Breath":
                 $this->offensiveSpell=$dragonBreath;
                 break;
-            case "LightningChain":
+            case "Lightning Chain":
                 $this->offensiveSpell = $lightningChain;
                 echo $this." changed attack spell to ".$this->getOffensive().PHP_EOL;
                 break;
@@ -395,13 +395,13 @@ abstract class Character
         $protectedArea = new ProtectedArea();
         $stickToMe = new StickToMe();
         switch ($selection){
-            case"DragonSkin":
+            case"Dragon Skin":
                 $this->defensiveSpell = $dragonSkin;
                 break;
-            case "ProtectedArea":
+            case "Protected Area":
                 $this->defensiveSpell=$protectedArea;
                 break;
-            case "StickToMe":
+            case "Stick To Me":
                 $this->defensiveSpell = $stickToMe;
                 echo $this." changed defend spell to ".$this->getDefensive().PHP_EOL;
                 break;
@@ -413,13 +413,13 @@ abstract class Character
         $healingLightHouse = new HealingLightHouse();
         $heartOfDragon = new HeartOfDragon();
         switch ($selection){
-            case"HealingAura":
+            case"Healing Aura":
                 $this->healSpell = $healingAura;
                 break;
-            case "HealingLightHouse":
+            case "Healing Light House":
                 $this->healSpell= $healingLightHouse;
                 break;
-            case "HeartOfDragon":
+            case "Heart Of Dragon":
                 $this->healSpell = $heartOfDragon;
                 echo $this." changed heal spell to ".$this->getHealSpell().PHP_EOL;
                 break;

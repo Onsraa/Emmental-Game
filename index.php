@@ -62,12 +62,12 @@ if (empty($player_characters)) {
 
         switch ($answer) {
             case 1:
-                selectOffensiveSpell($current_character);
-                showOffensiveSpell($current_character);
                 break;
             case 2:
                 $current_character->showSpec();
+                break;
             case 3:
+                chooseAnotherSpell($current_character);
                 break;
             case 4:
                 chooseAnotherClass($player_characters, $nickname, $current_character);
