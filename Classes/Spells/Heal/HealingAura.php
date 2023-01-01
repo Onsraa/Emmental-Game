@@ -16,7 +16,7 @@ class HealingAura extends Heal
             cost: 0,
             heal: 150,
             factor: "fixed",
-            owners: null,
+            owners: [null],
         );
     }
 }

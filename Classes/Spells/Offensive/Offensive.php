@@ -11,8 +11,8 @@ class Offensive extends Spell
         public string $spellName,
         public string $description,
         public int $cost,
-        public array $damage = ["physicalDamage" => null, "magicalDamage" => null],
         public ?array $owners,
+        public array $damage = ["physicalDamage" => null, "magicalDamage" => null],
     ) {
         parent::__construct($spellName, $description, $cost, $owners);
     }

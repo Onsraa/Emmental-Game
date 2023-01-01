@@ -15,7 +15,7 @@ class ProtectedArea extends Defensive
             cost: 40,
             defense: 50,
             factor: "fixed",
-            owners: null,
+            owners: [null],
         );
     }
 }

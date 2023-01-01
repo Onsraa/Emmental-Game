@@ -55,3 +55,10 @@ function fightAlgorithm(Character $attacker, Character $target): string
         return "hit";
     }
 }
+
+function generateRandomOpponent(): Character{
+
+    #array mobs = ["Piggy", "Demon", "Goblin", "Dragon", "Specter", "Dark mage"];
+
+    
+}

@@ -9,6 +9,7 @@ class Spell
         public string $spellName,
         public string $description,
         public int $cost,
+        public ?array $owners = null,
     ) {
     }
 }

@@ -12,8 +12,8 @@ class EatThis extends Offensive
             spellName: "Eat This!",
             description: "Throw weapon in the direction.",
             cost: 65,
+            owners: ["Shai"],
             damage: ["physicalDamage" => 0, "magicalDamage" => 300],
-            owners: ["Kunochi"],
         );
     }
 }

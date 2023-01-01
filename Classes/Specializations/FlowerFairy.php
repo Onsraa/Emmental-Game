@@ -7,9 +7,10 @@ use App\Classes\Characters\Character;
 class FlowerFairy extends Character
 {
 
-    public function __construct()
+    public function __construct($username)
     {
         parent::__construct(
+            username: $username,
             className: "Flower Fairy",       // basically the specialization name of the character
             element: "plant",              // the element which will define who he is weak against
             health: 900,                 // total fixed health points

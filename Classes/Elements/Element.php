@@ -2,8 +2,6 @@
 
 namespace App\Classes\Elements;
 
-use App\Classes\Characters\Character;
-
 class Element
 {
     public function __construct(
@@ -20,7 +18,7 @@ class Element
         $otherElement = $targettedElement->element;
 
         foreach ($elementCompatibility as $key => $value) {
-            if ($key == $currentElement && $value == $otherElement) {
+            if ($key == $currentElement && $value == $otherElement || $currentElement == $targettedElement) {
                 return "efficient";
             } else if (
                 $key == $otherElement && $value == $currentElement
