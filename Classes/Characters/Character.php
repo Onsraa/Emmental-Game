@@ -189,7 +189,9 @@ abstract class Character
             if ($this->currentMana >= $this->healSpell->cost) { // conditions checked : has enough mana to cast AND has less than 60% hp
                 ($this->healSpell->factor == "fixed") ? $this->currentHealth += $this->healSpell->heal : $this->currentHealth *= $this->healSpell->heal;
                 $this->currentMana -= $this->healSpell->cost;
+                echo PHP_EOL . $this->username . " used a healing spell ; [{$this->healSpell->spellName} / {$this->healSpell->description}]" . PHP_EOL;
                 echo "Spell cost : {$this->healSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} " . PHP_EOL;
+                echo $this->username . " (HP) : [{$this->currentHealth}/{$this->health}]" . PHP_EOL;
             } else {
                 $this->hit($target); // if the player doesn't have enough mana, then it hits instead of healing
             }

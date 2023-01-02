@@ -1,6 +1,6 @@
 <?php
 
-require_once("./Autoload.php");
+require_once("./autoload.php");
 require_once("./Functions/rng.php");
 require_once("./Functions/fight.php");
 require_once("./Functions/classes.php");
