@@ -1,6 +1,6 @@
 <?php
 
-require_once("./Autoload.php");
+require_once("./autoload.php");
 require_once("./Functions/rng.php");
 require_once("./Functions/fight.php");
 require_once("./Functions/classes.php");
@@ -62,6 +62,12 @@ if (empty($player_characters)) {
 
         switch ($answer) {
             case 1:
+                $opponent = mobGenerator();
+
+                if ($opponent) {
+                    fight($current_character, $opponent);
+                }
+
                 break;
             case 2:
                 $current_character->showSpec();
@@ -84,8 +90,6 @@ if (empty($player_characters)) {
                         exit;
                     case 'N':
                         break;
-                    default:
-                        break;
                 }
                 break;
             default:
@@ -93,5 +97,3 @@ if (empty($player_characters)) {
         }
     }
 }
-
-// TEDDY STOPS HERE

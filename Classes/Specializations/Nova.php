@@ -15,7 +15,7 @@ class Nova extends Character
             element: "fire",              // the element which will define who he is weak against
             health: 1000,                 // total fixed health points
             mana: 300,
-            physicalStrength: 80,        // basic stats without weapons and stuffs
+            physicalStrength: 130,        // basic stats without weapons and stuffs
             magicalStrength: 0,
             physicalDefense: 165,
             magicalDefense: 150,

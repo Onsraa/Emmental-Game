@@ -6,12 +6,13 @@ use App\Classes\Gears\Weapons\MagicalWeapon;
 
 class PanFlute extends MagicalWeapon
 {
-    public function __construct()
+    function __construct()
     {
-        parent::__construct("Pan flute",
-                            "An old flute that belonged to Pan, a master of music and spells.",
-                            8,
-                            25,
-                            );
+        parent::__construct(
+            "Pan flute",
+            "An old flute that belonged to Pan, a master of music and spells.",
+            8,
+            25,
+        );
     }
 }

@@ -13,7 +13,7 @@ class StickToMe extends Defensive
             spellName: "Stick to Me",
             description: "Raise your vitclari high into the air, spin it around, protecting allies",
             cost: 100,
-            defense: 50,
+            defense: 120,
             factor: "fixed",
             owners: ["Shai"],
         );

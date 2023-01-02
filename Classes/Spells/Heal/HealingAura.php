@@ -13,7 +13,7 @@ class HealingAura extends Heal
         parent::__construct(
             spellName: "Healing Aura",
             description: "Recovers a certain amount of faraway frends",
-            cost: 0,
+            cost: 83,
             heal: 150,
             factor: "fixed",
             owners: [null],

@@ -16,7 +16,7 @@ class Kunochi extends Character
             health: 700,                 // total fixed health points
             mana: 250,
             physicalStrength: 0,        // basic stats without weapons and stuffs
-            magicalStrength: 130,
+            magicalStrength: 180,
             physicalDefense: 120,
             magicalDefense: 140,
         );

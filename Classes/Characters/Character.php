@@ -4,6 +4,7 @@ namespace App\Classes\Characters;
 
 use App\Classes\Elements\Element;
 use App\Classes\Gears\Armors\HelmetOfAthena;
+use App\Classes\Gears\Armors\AresCrown;
 use App\Classes\Gears\Gear;
 use App\Classes\Spells\Offensive\Offensive;
 use App\Classes\Spells\Defensive\Defensive;
@@ -44,7 +45,6 @@ abstract class Character
         protected float $physicalDefense = 0,
         protected float $magicalDefense = 0,
         protected ?Gear $gear = null,          // gear that contains the weapon and the armor (equipped)
-        protected ?Gear $bag = null,           // gear that contains the weapon and the armor (broken or not)
         protected ?Offensive $offensiveSpell = null,
         protected ?Defensive $defensiveSpell = null,
         protected ?Heal $healSpell = null,
@@ -59,9 +59,11 @@ abstract class Character
     { // function to calculate the damage before the damageTanked()
 
 
-        $baseDamage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
-        $damage = $this->gear->equippedWeapon->addWeaponDamages($baseDamage, $this->myElement);
+        $damage = ["physicalDamage" => $this->physicalStrength, "magicalDamage" => $this->magicalStrength];
 
+        if ($this->gear && $this->gear->equippedWeapon) {
+            $damage = $this->gear->equippedWeapon->addWeaponDamages($damage, $this->myElement);
+        }
         // if the character has an offensive spell then :
         if ($this->offensiveSpell) {
             if ($this->currentMana >= $this->offensiveSpell->cost) {
@@ -114,10 +116,11 @@ abstract class Character
                 break;
         }
         // if the character has a defensive spell then :
-        if ($this->defensiveSpell) {
+        if ($this->defensiveSpell && !$simulate) {
             if ($this->currentHealth * 0.3 <= $finalDamage && $this->defensiveSpell->cost <= $this->currentMana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
                 $this->currentMana -= $this->defensiveSpell->cost; //mana lost from the spell cast
-                echo "Spell cost : {$this->defensiveSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} " . PHP_EOL;
+                echo PHP_EOL . $this->username . " used a defensive spell ; [{$this->defensiveSpell->spellName} / {$this->defensiveSpell->description}]" . PHP_EOL;
+                echo "Spell cost : {$this->defensiveSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} " . PHP_EOL . PHP_EOL;
                 foreach ($finalDamage as &$value) {
                     ($this->defensiveSpell->factor == "fixed") ? $value += $this->defensiveSpell->defense : $value *= $this->defensiveSpell->defense;
                 }
@@ -125,8 +128,9 @@ abstract class Character
         }
 
         //if the character has an armor equipped then : 
-        if ($this->gear->equippedArmor) {
+        if ($this->gear && $this->gear->equippedArmor && !$simulate) {
             $this->gear->equippedArmor->shields($finalDamage);
+            echo "The enemy's attack dealt less damages thanks to the " . $this->gear->equippedArmor->getName() . " of " . $this->username . PHP_EOL;
         }
 
         return $finalDamage;
@@ -185,7 +189,9 @@ abstract class Character
             if ($this->currentMana >= $this->healSpell->cost) { // conditions checked : has enough mana to cast AND has less than 60% hp
                 ($this->healSpell->factor == "fixed") ? $this->currentHealth += $this->healSpell->heal : $this->currentHealth *= $this->healSpell->heal;
                 $this->currentMana -= $this->healSpell->cost;
+                echo PHP_EOL . $this->username . " used a healing spell ; [{$this->healSpell->spellName} / {$this->healSpell->description}]" . PHP_EOL;
                 echo "Spell cost : {$this->healSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} " . PHP_EOL;
+                echo $this->username . " (HP) : [{$this->currentHealth}/{$this->health}]" . PHP_EOL;
             } else {
                 $this->hit($target); // if the player doesn't have enough mana, then it hits instead of healing
             }
@@ -238,7 +244,7 @@ abstract class Character
     {
         $this->currentHealth = $this->health; //reset health after fight
         $this->currentMana = $this->mana; //reset health after fight
-        $this->gear = $this->bag; //reset broken gear
+        $this->isAlive = true;
     }
 
     public function showSpec()
@@ -314,6 +320,21 @@ abstract class Character
         echo PHP_EOL . "  Heal : ";
         echo ($this->healSpell) ? "{$this->healSpell->spellName}" : "empty";
         echo PHP_EOL;
+        $sentence = "Gear";
+        $length = strlen($sentence);
+
+        for ($i = 0; $i < (60 - $length) / 2; $i++) {
+            echo "-";
+        }
+        echo $sentence;
+        for ($i = 0; $i < (60 - $length) / 2; $i++) {
+            echo "-";
+        }
+        echo PHP_EOL . "  Weapon : ";
+        echo ($this->gear && $this->gear->equippedWeapon) ? "{$this->gear->equippedWeapon->getName()}" : "empty";
+        echo PHP_EOL . "  Armor : ";
+        echo ($this->gear && $this->gear->equippedArmor) ? "{$this->gear->equippedArmor->getName()}" : "empty";
+        echo PHP_EOL;
         for ($i = 0; $i < 60; $i++) {
             echo "-";
         }
@@ -333,32 +354,41 @@ abstract class Character
         $canUse = [0 => $panFlute, 1 => $WandOfCallipso, 2 => $devilAxe];
 
         $this->gear = new Gear($canUse[$weapon]);
-        echo $this->className . ' takes a ' . $canUse[$weapon] . PHP_EOL;
+        echo PHP_EOL . $this->className . ' takes a ' . $canUse[$weapon] . PHP_EOL;
     }
 
     public function takesArmor(int $armor)
     {
         $helmet = new HelmetOfAthena();
+        $crown = new AresCrown();
 
-        $canWear = [0 => $helmet, 1 => null];
+        $canWear = [0 => $helmet, 1 => $crown];
 
 
-        $this->gear = $armor == 1 ? null : new Gear(null, $canWear[$armor]);
-        echo $this->className . ' wears ';
-        echo ($canWear[$armor] == null) ? "nothing to protect themself." . PHP_EOL : $canWear[$armor] . PHP_EOL;
+        $this->gear = new Gear(null, $canWear[$armor]);
+        echo PHP_EOL . $this->className . ' wears ';
+        echo ($canWear[$armor] == null) ? "nothing to protect themself." . PHP_EOL : $canWear[$armor] . PHP_EOL; //should never happen now
     }
 
     public function takesGear()
     {
-        if (rand(0, 1) == 0) {
+        $luckyLuck = rand(0, 1);
+
+        if ($luckyLuck == 0) {
             $this->takesWeapon(rand(0, 2));
-        } else {
+        } else if ($luckyLuck == 1) {
             $this->takesArmor(rand(0, 1));
+        } else {
+            echo PHP_EOL . "Oh no, " . $this->username . " is unlucky, they didn't get anything to help them in this fight. :c" . PHP_EOL;
         }
     }
     public function showGear()
     {
-        echo 'The character has :' . $this->gear . PHP_EOL; //on null this crash. #TO DO
+        if ($this->gear && ($this->gear->equippedArmor || $this->gear->equippedWeapon)) {
+            echo $this->username . ' has ' . $this->gear . '.' . PHP_EOL;
+        } else {
+            echo $this->username . "'s gear is empty." . PHP_EOL;
+        }
     }
 
     public function getClassName(): string
@@ -376,16 +406,24 @@ abstract class Character
         $eatThis = new EatThis();
         $dragonBreath = new DragonBreath();
         $lightningChain = new LightningChain();
-        switch ($selection){
-            case"Eat This":
+        switch ($selection) {
+            case "Eat This":
+                if((!empty($eatThis->owners) && in_array($this->className,$eatThis->owners) )|| empty($eatThis->owners)){
                 $this->offensiveSpell = $eatThis;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Dragon Breath":
-                $this->offensiveSpell=$dragonBreath;
+                if((!empty($dragonBreath->owners) && in_array($this->className,$dragonBreath->owners)) || empty($dragonBreath->owners)){
+                $this->offensiveSpell = $dragonBreath;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Lightning Chain":
+                if(  (!empty($lightningChain->owners) && in_array($this->className,$lightningChain->owners) )|| empty($lightningChain->owners)){
                 $this->offensiveSpell = $lightningChain;
-                echo $this." changed attack spell to ".$this->getOffensive().PHP_EOL;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
         }
     }
@@ -394,56 +432,75 @@ abstract class Character
         $dragonSkin = new DragonSkin();
         $protectedArea = new ProtectedArea();
         $stickToMe = new StickToMe();
-        switch ($selection){
-            case"Dragon Skin":
+        switch ($selection) {
+            case "Dragon Skin":
+                if((!empty($dragonSkin->owners) && in_array($this->className,$dragonSkin->owners) ) || empty($dragonSkin->owners)){
                 $this->defensiveSpell = $dragonSkin;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Protected Area":
-                $this->defensiveSpell=$protectedArea;
+                if( (!empty($protectedArea->owners) && in_array($this->className,$protectedArea->owners) ) || empty($protectedArea->owners)){
+                $this->defensiveSpell = $protectedArea;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Stick To Me":
+                if( (!empty($stickToMe->owners) && in_array($this->className,$stickToMe->owners) )|| empty($stickToMe->owners)){
                 $this->defensiveSpell = $stickToMe;
-                echo $this." changed defend spell to ".$this->getDefensive().PHP_EOL;
+                echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
         }
     }
+
     public function setHealSpell($selection): void
     {
         $healingAura = new HealingAura();
         $healingLightHouse = new HealingLightHouse();
         $heartOfDragon = new HeartOfDragon();
-        switch ($selection){
-            case"Healing Aura":
+
+        switch ($selection) {
+            case "Healing Aura":
+                if ( (!empty($healingAura->owners) &&in_array($this->className,$healingAura->owners) )|| empty($healingAura->owners)){
                 $this->healSpell = $healingAura;
+                    echo $this . " changed heal spell to " . $this->getHealSpell() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Healing Light House":
-                $this->healSpell= $healingLightHouse;
+                if ((!empty($healingLightHouse->owners) &&in_array($this->className,$healingLightHouse->owners)) || empty($healingLightHouse->owners)){
+                $this->healSpell = $healingLightHouse;
+                    echo $this . " changed heal spell to " . $this->getHealSpell() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Heart Of Dragon":
+                if ((!empty($heartOfDragon->owners) &&in_array($this->className,$heartOfDragon->owners)) || empty($heartOfDragon->owners)){
                 $this->healSpell = $heartOfDragon;
-                echo $this." changed heal spell to ".$this->getHealSpell().PHP_EOL;
+                echo $this . " changed heal spell to " . $this->getHealSpell() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
         }
     }
+
     public function getOffensive(): string
     {
-        if (isset($this->offensiveSpell)){
+        if (isset($this->offensiveSpell)) {
 
-        return $this->offensiveSpell->spellName;
+            return $this->offensiveSpell->spellName;
         } else return "Nothing";
     }
     public function getDefensive(): string
     {
-        if (isset($this->defensiveSpell)){
+        if (isset($this->defensiveSpell)) {
 
-        return $this->defensiveSpell->spellName;
+            return $this->defensiveSpell->spellName;
         } else return "Nothing";
     }
     public function getHealSpell(): string
     {
-        if (isset($this->healSpell)){
+        if (isset($this->healSpell)) {
 
-        return $this->healSpell->spellName;
+            return $this->healSpell->spellName;
         } else return "Nothing";
     }
 }

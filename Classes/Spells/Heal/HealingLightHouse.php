@@ -13,7 +13,7 @@ class HealingLightHouse extends Heal
         parent::__construct(
             spellName: "Healing Lighthouse",
             description: "Uses enormous magical power to significantly recover the HP of self and friends",
-            cost: 200,
+            cost: 130,
             heal: 300,
             factor: "fixed",
             owners: ["FlowerFairy"],

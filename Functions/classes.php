@@ -8,7 +8,7 @@ use App\Classes\Specializations\Kunochi;
 use App\Classes\Specializations\Ninja;
 use App\Classes\Specializations\Nova;
 use App\Classes\Specializations\Shai;
-use App\Classes\Spells\Defensive\StickToMe;
+
 function addClass($nickname)
 {
 
@@ -85,12 +85,11 @@ function chooseAnotherClass(array &$classes, string $nickname, Character &$curre
 
         $answer = readline("Selection : ");
     } while ($answer < 1 && $answer > 3);
-
+    cls();
     switch ((int)$answer) {
         case 1:
 
             do {
-
                 cls();
                 echo "What class do you want to play ?" . PHP_EOL . PHP_EOL;
                 echo "Here is your classes : ";
@@ -102,7 +101,6 @@ function chooseAnotherClass(array &$classes, string $nickname, Character &$curre
             echo PHP_EOL;
             $current_character = $classes[$answer - 1];
             echo "You choose class n°" . $answer . " : The " . $classes[$answer - 1]->getClassName() . PHP_EOL;
-            echo PHP_EOL;
             $classes[$answer - 1]->showSpec();
             break;
         case 2:

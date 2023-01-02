@@ -13,7 +13,7 @@ class Ninja extends Character
             username: $username,
             className: "Ninja",       // basically the specialization name of the character
             element: "fire",              // the element which will define who he is weak against
-            health: 650,                 // total fixed health points
+            health: 750,                 // total fixed health points
             mana: 280,
             physicalStrength: 210,        // basic stats without weapons and stuffs
             magicalStrength: 0,
