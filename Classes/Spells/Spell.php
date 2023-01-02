@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Classes\Spells;
-abstract class Spell{
 
-    function __construct(
+class Spell
+{
+
+    public function __construct(
         public string $spellName,
         public string $description,
-        public int $value,
-        
-    )
-    {
-        
+        public int $cost,
+        public ?array $owners = null,
+    ) {
     }
 }
