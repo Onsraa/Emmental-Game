@@ -116,10 +116,11 @@ abstract class Character
                 break;
         }
         // if the character has a defensive spell then :
-        if ($this->defensiveSpell) {
+        if ($this->defensiveSpell && !$simulate) {
             if ($this->currentHealth * 0.3 <= $finalDamage && $this->defensiveSpell->cost <= $this->currentMana) { //if the damage deals is > at 30% of the current health of the target then it tries to use the defense spell
                 $this->currentMana -= $this->defensiveSpell->cost; //mana lost from the spell cast
-                echo "Spell cost : {$this->defensiveSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} " . PHP_EOL;
+                echo PHP_EOL . $this->username . " used a defensive spell ; [{$this->defensiveSpell->spellName} / {$this->defensiveSpell->description}]" . PHP_EOL;
+                echo "Spell cost : {$this->defensiveSpell->cost} | Mana points : {$this->currentMana}/{$this->mana} " . PHP_EOL . PHP_EOL;
                 foreach ($finalDamage as &$value) {
                     ($this->defensiveSpell->factor == "fixed") ? $value += $this->defensiveSpell->defense : $value *= $this->defensiveSpell->defense;
                 }
@@ -127,7 +128,7 @@ abstract class Character
         }
 
         //if the character has an armor equipped then : 
-        if ($this->gear && $this->gear->equippedArmor) {
+        if ($this->gear && $this->gear->equippedArmor && !$simulate) {
             $this->gear->equippedArmor->shields($finalDamage);
             echo "The enemy's attack dealt less damages thanks to the " . $this->gear->equippedArmor->getName() . " of " . $this->username . PHP_EOL;
         }
