@@ -408,14 +408,22 @@ abstract class Character
         $lightningChain = new LightningChain();
         switch ($selection) {
             case "Eat This":
+                if(in_array($this->className,$eatThis->owners) || empty($eatThis->owners)){
                 $this->offensiveSpell = $eatThis;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Dragon Breath":
+                if(in_array($this->className,$dragonBreath->owners) || empty($dragonBreath->owners)){
                 $this->offensiveSpell = $dragonBreath;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Lightning Chain":
+                if(in_array($this->className,$lightningChain->owners) || empty($lightningChain->owners)){
                 $this->offensiveSpell = $lightningChain;
-                echo $this . " changed attack spell to " . $this->getOffensive() . PHP_EOL;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
         }
     }
@@ -426,35 +434,54 @@ abstract class Character
         $stickToMe = new StickToMe();
         switch ($selection) {
             case "Dragon Skin":
+                if(in_array($this->className,$dragonSkin->owners) || empty($dragonSkin->owners)){
                 $this->defensiveSpell = $dragonSkin;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Protected Area":
+                if(in_array($this->className,$protectedArea->owners) || empty($protectedArea->owners)){
                 $this->defensiveSpell = $protectedArea;
+                    echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Stick To Me":
+                if(in_array($this->className,$stickToMe->owners) || empty($stickToMe->owners)){
                 $this->defensiveSpell = $stickToMe;
                 echo $this . " changed defend spell to " . $this->getDefensive() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
         }
     }
+
     public function setHealSpell($selection): void
     {
         $healingAura = new HealingAura();
         $healingLightHouse = new HealingLightHouse();
         $heartOfDragon = new HeartOfDragon();
+
         switch ($selection) {
             case "Healing Aura":
+                if (in_array($this->className,$healingAura->owners) || empty($healingAura->owners)){
                 $this->healSpell = $healingAura;
+                    echo $this . " changed heal spell to " . $this->getHealSpell() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Healing Light House":
+                if (in_array($this->className,$healingLightHouse->owners) || empty($healingLightHouse->owners)){
                 $this->healSpell = $healingLightHouse;
+                    echo $this . " changed heal spell to " . $this->getHealSpell() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
             case "Heart Of Dragon":
+                if (in_array($this->className,$heartOfDragon->owners) || empty($heartOfDragon->owners)){
                 $this->healSpell = $heartOfDragon;
                 echo $this . " changed heal spell to " . $this->getHealSpell() . PHP_EOL;
+                } else {echo "Your class can not use this spell.";}
                 break;
         }
     }
+
     public function getOffensive(): string
     {
         if (isset($this->offensiveSpell)) {
