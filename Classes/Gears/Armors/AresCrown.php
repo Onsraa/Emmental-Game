@@ -10,7 +10,7 @@ class AresCrown extends Armor
     {
         parent::__construct(
             "Ares's crown",
-            "The crown of the God of War.",
+            "The crown of the God of War",
             100,
             25,
             3

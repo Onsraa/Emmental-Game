@@ -10,7 +10,7 @@ class DevilAxe extends PhysicalWeapon
     {
         parent::__construct(
             "Devil Axe",
-            "An old axe that belonged to a titan, a master of rocks and violence.",
+            "An old axe that belonged to a titan, a master of rocks and violence",
             15,
             6,
         );

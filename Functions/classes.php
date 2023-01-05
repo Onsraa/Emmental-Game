@@ -16,7 +16,7 @@ function addClass($nickname)
     $classes = ["Draconist", "Chaman", "FlowerFairy", "Kunochi", "Ninja", "Nova", "Shai"]; // Where you add classes
     $nbClasses = count($classes);
 
-    echo "Select a class :" . PHP_EOL;
+    echo "Select a class for your new character :" . PHP_EOL;
     echo PHP_EOL;
     foreach ($classes as $key => $value) {
         $character_nb = $key + 1;
@@ -36,10 +36,10 @@ function addClass($nickname)
         $character_nb = $key + 1;
         if ($select_class == $character_nb) {
             cls();
-            echo "The {$value} has been created successfully." . PHP_EOL . PHP_EOL;
+            echo "The {$value} has been created successfully." . PHP_EOL. "You can now choose this character to play with." . PHP_EOL . PHP_EOL;
             return selectClass($nickname, $value);
         }
-    }
+    } 
 }
 function selectClass(string $nickname, string $class)
 {
@@ -79,9 +79,9 @@ function chooseAnotherClass(array &$classes, string $nickname, Character &$curre
 
         cls();
         echo "What do you want to do ?" . PHP_EOL;
-        echo PHP_EOL . "1 - Choose another class" . PHP_EOL;
-        echo PHP_EOL . "2 - Create a new class" . PHP_EOL;
-        echo PHP_EOL . "3 - Nothing" . PHP_EOL . PHP_EOL;
+        echo PHP_EOL . "1 - Choose another character to play with" . PHP_EOL;
+        echo PHP_EOL . "2 - Create a new character" . PHP_EOL;
+        echo PHP_EOL . "3 - Back to menu" . PHP_EOL . PHP_EOL;
 
         $answer = readline("Selection : ");
     } while ($answer < 1 && $answer > 3);
@@ -91,8 +91,8 @@ function chooseAnotherClass(array &$classes, string $nickname, Character &$curre
 
             do {
                 cls();
-                echo "What class do you want to play ?" . PHP_EOL . PHP_EOL;
-                echo "Here is your classes : ";
+                echo "What character do you want to play ?" . PHP_EOL . PHP_EOL;
+                echo "Here are your current characters : ";
                 showAllClasses($classes);
                 $answer = readline("Selection : ") . PHP_EOL;
             } while ($answer < 1 && $answer > count($classes));
@@ -100,7 +100,7 @@ function chooseAnotherClass(array &$classes, string $nickname, Character &$curre
             cls();
             echo PHP_EOL;
             $current_character = $classes[$answer - 1];
-            echo "You choose class n°" . $answer . " : The " . $classes[$answer - 1]->getClassName() . PHP_EOL;
+            echo "You choose class n°" . (int)$answer . " : The " . $classes[$answer - 1]->getClassName() . PHP_EOL;
             $classes[$answer - 1]->showSpec();
             break;
         case 2:

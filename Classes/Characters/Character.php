@@ -154,24 +154,43 @@ abstract class Character
         $target->currentHealth -= $totalDamage;
 
         if (isset($damage[0])) {
-            echo PHP_EOL . "Critical hit !" . PHP_EOL;
+            echo PHP_EOL . "It 's a critical hit !" . PHP_EOL;
         }
         switch ($this->myElement->compatibility($target->myElement)) {
             case "efficient":
-                echo PHP_EOL . "Damage is effective ! It gains 50% more damage." . PHP_EOL;
+                echo PHP_EOL . ucfirst($this->element) ." is strong against {$target->element}." . PHP_EOL ;
+                echo "The attack deals 50% more damage." . PHP_EOL;
                 break;
             case "ineffective":
-                echo PHP_EOL . "Misery ! The damage lost 30% of its value because of the element.." . PHP_EOL;
+                echo PHP_EOL . ucfirst($this->element) ." is weak against {$target->element}." . PHP_EOL ;
+                echo "Misery ! The attack deals 30% less damage." . PHP_EOL;
                 break;
             default:
+                echo "The players elements are identical." . PHP_EOL;
                 break;
         }
 
         echo PHP_EOL;
-        echo "The {$this} hit the {$target} for {$totalDamage} !";
+        echo "{$this} hits {$target} for {$totalDamage} !" . PHP_EOL ;
+        echo PHP_EOL;
+        
+        //gear object losing life then eventually get thrown away.^M
+        if ($this->gear && ($this->gear->equippedWeapon || $this->gear->equippedArmor))
+        {
+            $equippedObject = ($this->gear->equippedWeapon) ? $this->gear->equippedWeapon : $this->gear->equippedArmor ;
+            
+            if ($equippedObject->breaks() == 1)
+            {
+                $this->gear = $this->gear->goesToTrash($equippedObject);
+            } else {
+                echo "{$this}'s object ({$equippedObject}) is usable for " . $equippedObject->getDurability(). " turns before it breaks." . PHP_EOL;     
+            }
+
+        }
+        
         echo PHP_EOL;
         echo PHP_EOL;
-        echo "Remain hp : [{$target->currentHealth}/{$target->health}]";
+        echo "{$target}'s remaining HP : [{$target->currentHealth}/{$target->health}]";
         echo PHP_EOL;
 
         $this->regeneratingMana();
@@ -216,7 +235,7 @@ abstract class Character
         $this->magicalDefense += $this->magicalDefense * 0.5;
 
         echo PHP_EOL;
-        echo "The {$this} has leveled up :";
+        echo "{$this} has leveled up :";
         echo PHP_EOL;
         echo "{$this} is level " . $this->level["level"] . " !";
         echo PHP_EOL;
@@ -238,7 +257,7 @@ abstract class Character
     }
     public function __toString()
     {
-        return $this->username;
+        return "{$this->username}, the {$this->className}";
     }
     public function restore()
     {
@@ -267,7 +286,7 @@ abstract class Character
         }
         echo PHP_EOL;
 
-        echo "  Username : {$this->username}";
+        echo "  Username : {$this->username}" . PHP_EOL ;
         echo "  Class : {$this->className}" . PHP_EOL;
         echo "  Element : {$this->element}" . PHP_EOL;
         echo "  Level : {$this->level['level']}" . PHP_EOL;
@@ -400,6 +419,7 @@ abstract class Character
     {
         return $this->level['level'];
     }
+
     #Quang's stuff - spell
     public function setOffensive($selection): void
     {

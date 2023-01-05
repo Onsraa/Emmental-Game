@@ -19,6 +19,9 @@ function fight(Character &$player1, Character &$player2): void
     $player1->takesGear();
     $player2->takesGear();
 
+    echo PHP_EOL . "*****************************************************************************" . PHP_EOL;;
+    echo PHP_EOL . " --- {$player1} VS {$player2} ---" . PHP_EOL;
+
     $round = 1;
     while ($player1->isAlive && $player2->isAlive) {
 
@@ -49,7 +52,7 @@ function fight(Character &$player1, Character &$player2): void
     echo PHP_EOL . "*****************************************************************************" . PHP_EOL;;
     echo PHP_EOL;
     if ($player1->isAlive) {
-        echo "The {$player1} won ! Congratulations." . PHP_EOL;
+        echo "{$player1} won ! Congratulations." . PHP_EOL;
     } else {
         echo "You got defeated by {$player2}, try next time." . PHP_EOL;
     }

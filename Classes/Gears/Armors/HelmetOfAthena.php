@@ -10,7 +10,7 @@ class HelmetOfAthena extends Armor
     {
         parent::__construct(
             "Athena's Helmet",
-            "The helmet which led to victory.",
+            "The helmet which led to victory",
             80,
             35,
             10

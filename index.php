@@ -13,11 +13,13 @@ function cls() //clear console function
 
 $player_characters = []; // each class created is added here
 cls();
-echo "Welcome to our game" . PHP_EOL;
+echo "### Welcome to our game ###" . PHP_EOL;
 
-echo PHP_EOL . "What is your name ?" . PHP_EOL . PHP_EOL;
+echo PHP_EOL . "What is your name, young pal ?" . PHP_EOL . PHP_EOL;
 
-$nickname = readline("Your name : ") . PHP_EOL;
+$nickname = readline("Write your name : ") . PHP_EOL;
+$nickname = str_replace("\r\n","",$nickname); // remove the \n in readline
+$nickname = ucfirst($nickname); //put an uppercase letter at the start of username
 
 cls();
 
@@ -25,7 +27,7 @@ echo PHP_EOL . "Nice to meet you {$nickname}" . PHP_EOL;
 
 
 if (empty($player_characters)) {
-    echo "You currently don't have any character. Would you like one ?" . PHP_EOL . PHP_EOL;
+    echo "You currently don't have any character. Would you like to create one ?" . PHP_EOL . PHP_EOL;
     do {
         $answer = readline("(y)es or (n)o : ");
     } while ($answer != 'Y' && $answer != 'y' && $answer != 'N' && $answer != 'n');
