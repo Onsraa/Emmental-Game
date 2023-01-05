@@ -391,7 +391,7 @@ abstract class Character
 
     public function takesGear()
     {
-        $luckyLuck = rand(0, 1);
+        $luckyLuck = rand(0, 2);
 
         if ($luckyLuck == 0) {
             $this->takesWeapon(rand(0, 2));
@@ -407,6 +407,17 @@ abstract class Character
             echo $this->username . ' has ' . $this->gear . '.' . PHP_EOL;
         } else {
             echo $this->username . "'s gear is empty." . PHP_EOL;
+        }
+    }
+
+    public function hasGear(): int
+    {
+        if ($this->gear && ($this->gear->equippedArmor || $this->gear->equippedWeapon))
+        {
+            return 1;
+        } else 
+        {
+            return 0;
         }
     }
 
