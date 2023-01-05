@@ -16,11 +16,12 @@ function fight(Character &$player1, Character &$player2): void
     $player1->restore();
     $player2->restore();
 
-    $player1->takesGear();
-    $player2->takesGear();
-
     echo PHP_EOL . "*****************************************************************************" . PHP_EOL;;
     echo PHP_EOL . " --- {$player1} VS {$player2} ---" . PHP_EOL;
+    echo PHP_EOL . "*****************************************************************************" . PHP_EOL;;
+
+    $player1->takesGear();
+    $player2->takesGear();
 
     $round = 1;
     while ($player1->isAlive && $player2->isAlive) {
