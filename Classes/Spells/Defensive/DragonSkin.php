@@ -13,7 +13,7 @@ class DragonSkin extends Defensive
             spellName: "Dragon skin",
             description: "Hardens skin as hard as a dragon's",
             cost: 40,
-            defense: 0.4,
+            defense: 40,
             factor: "ratio",
             owners: ["Draconist"],
         );
