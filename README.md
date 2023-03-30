@@ -5,4 +5,4 @@ We failed our first project but we couldn't name two repository by the same name
 
 For games and for a lot of progamming applications, objects are not the most efficient way to run a program. But it's quite easy to understand the concept and it's very formative.
 
-Enjoy.
+Enjoy ✌️.
