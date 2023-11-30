@@ -1,4 +1,4 @@
-# Emmental-Game
+# Emmental Game
 
 This is a PHP object oriented programmation combat game with elements (and not cheese).
 We failed our first project but we couldn't name two repositories by the same name so instead of Elemental-Game, we called it Emmental-Game.
